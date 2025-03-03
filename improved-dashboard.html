@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial News & Market Dashboard</title>
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent: #1e88e5;
+            --accent-green: #4caf50;
+            --accent-red: #f44336;
+            --card-radius: 8px;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        
+        header {
+            padding: 10px 0;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 {
+            margin: 0;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .ticker-container {
+            overflow: hidden;
+            white-space: nowrap;
+            background-color: var(--bg-card);
+            border-radius: var(--card-radius);
+            padding: 8px 0;
+            margin-bottom: 10px;
+        }
+        
+        .ticker {
+            display: inline-block;
+            animation: ticker 60s linear infinite;
+            padding-left: 100%;
+        }
+        
+        @keyframes ticker {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-200%);
+            }
+        }
+        
+        .ticker-item {
+            display: inline-block;
+            margin-right: 30px;
+            font-size: 1rem;
+        }
+        
+        .ticker-up {
+            color: var(--accent-green);
+        }
+        
+        .ticker-down {
+            color: var(--accent-red);
+        }
+        
+        /* Videos section at the top */
+        .videos-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .channel {
+            background-color: var(--bg-card);
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .channel-header {
+            padding: 8px 15px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .channel-name {
+            font-weight: 500;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        /* Dashboard content */
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .chart-container {
+            background-color: var(--bg-card);
+            border-radius: var(--card-radius);
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 350px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        .chart-controls {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .chart-button {
+            background-color: #2a2a2a;
+            color: var(--text-secondary);
+            border: none;
+            padding: 5px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+        
+        .chart-button:hover {
+            background-color: #3a3a3a;
+            color: var(--text-primary);
+        }
+        
+        .chart-button.active {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .market-overview {
+            background-color: var(--bg-card);
+            border-radius: var(--card-radius);
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .market-header {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        
+        .market-item {
+            background-color: #2a2a2a;
+            border-radius: 6px;
+            padding: 10px;
+        }
+        
+        .market-name {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .market-price {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .market-change {
+            font-size: 0.8rem;
+        }
+        
+        .change-up {
+            color: var(--accent-green);
+        }
+        
+        .change-down {
+            color: var(--accent-red);
+        }
+        
+        .direct-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .direct-link:hover {
+            text-decoration: underline;
+        }
+        
+        .channel-controls {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .channel-button {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .channel-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .news-feed {
+            background-color: var(--bg-card);
+            border-radius: var(--card-radius);
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .news-header {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        .news-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-time {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+        
+        .news-title {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .news-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .time-display {
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .custom-channel {
+            background-color: var(--bg-card);
+            border-radius: var(--card-radius);
+            padding: 15px;
+            margin-top: 10px;
+        }
+        
+        .custom-channel-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .url-input-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .url-input {
+            flex: 1;
+            padding: 8px 12px;
+            background-color: #2a2a2a;
+            border: none;
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        
+        .url-input:focus {
+            outline: 1px solid var(--accent);
+        }
+        
+        .add-channel-button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 1400px) {
+            .videos-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .videos-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .url-input-group {
+                flex-direction: column;
+            }
+            
+            .market-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>FINANCIAL NEWS & MARKETS</h1>
+            <div class="time-display" id="time-display">--:--:--</div>
+        </header>
+        
+        <div class="ticker-container">
+            <div class="ticker" id="market-ticker">
+                <!-- Ticker items will be added by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Video section at the top -->
+        <div class="videos-section" id="videos-section">
+            <!-- Channel 1 - Bloomberg -->
+            <div class="channel">
+                <div class="channel-header">
+                    <div class="channel-name">Bloomberg</div>
+                    <div class="channel-controls">
+                        <a href="https://www.youtube.com/channel/UCUMZ7gohGI9HcU9VNsr2FJQ/live" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <!-- Using a direct YouTube live stream embed with parameters to improve loading -->
+                    <iframe src="https://www.youtube.com/embed/dp8PhLsUcFE?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+            
+            <!-- Channel 2 - CNBC -->
+            <div class="channel">
+                <div class="channel-header">
+                    <div class="channel-name">CNBC</div>
+                    <div class="channel-controls">
+                        <a href="https://www.youtube.com/channel/UCvJJ_dzjViJCoLf5uKUTwoA/live" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/9NyxcX3rhQs?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+            
+            <!-- Channel 3 - Yahoo Finance -->
+            <div class="channel">
+                <div class="channel-header">
+                    <div class="channel-name">Yahoo Finance</div>
+                    <div class="channel-controls">
+                        <a href="https://www.youtube.com/channel/UCEAZeUIeJs0IjQHaizclCDQ/live" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/YbYxN5JPF0c?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+            
+            <!-- Channel 4 - Reuters -->
+            <div class="channel">
+                <div class="channel-header">
+                    <div class="channel-name">Reuters</div>
+                    <div class="channel-controls">
+                        <a href="https://www.youtube.com/channel/UChqUTb7kYRX8-EiaN3XFrSQ/live" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/OkW7MKEBDUc?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dashboard content below videos -->
+        <div class="dashboard-content">
+            <div class="left-column">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">S&P 500 (SPY)</div>
+                        <div class="chart-controls">
+                            <button class="chart-button" data-period="1d">1D</button>
+                            <button class="chart-button active" data-period="5d">5D</button>
+                            <button class="chart-button" data-period="1m">1M</button>
+                            <button class="chart-button" data-period="3m">3M</button>
+                            <button class="chart-button" data-period="1y">1Y</button>
+                        </div>
+                    </div>
+                    <div id="chart" style="width: 100%; height: 90%;">
+                        <!-- Chart will be inserted here by JavaScript -->
+                        <img src="/api/placeholder/800/300" alt="SPY Chart Placeholder" style="width: 100%; height: 100%; object-fit: cover;" />
+                    </div>
+                </div>
+                
+                <div class="market-overview">
+                    <div class="market-header">Market Overview</div>
+                    <div class="market-grid" id="market-grid">
+                        <!-- Market items will be added by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="right-column">
+                <div class="news-feed" id="news-feed">
+                    <div class="news-header">Financial News</div>
+                    <!-- News items will be added by JavaScript -->
+                </div>
+                
+                <div class="custom-channel">
+                    <div class="custom-channel-title">Add Custom Channel</div>
+                    <div class="url-input-group">
+                        <input type="text" class="url-input" id="custom-channel-name" placeholder="Channel Name">
+                        <input type="text" class="url-input" id="custom-video-id" placeholder="YouTube Video ID (e.g., dQw4w9WgXcQ)">
+                        <button class="add-channel-button" id="add-custom-channel">Add Channel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        Financial News & Market Dashboard &copy; 2025 | Dark Theme
+    </footer>
+
+    <script>
+        // Sample market data (since we can't make actual API calls)
+        const marketData = [
+            { name: "S&P 500", symbol: "SPY", price: 487.25, change: 1.25, changePercent: 0.26 },
+            { name: "Dow Jones", symbol: "DJI", price: 38421.15, change: -102.34, changePercent: -0.27 },
+            { name: "Nasdaq", symbol: "IXIC", price: 16985.30, change: 87.63, changePercent: 0.52 },
+            { name: "Bitcoin", symbol: "BTC", price: 68923.45, change: 1254.20, changePercent: 1.85 },
+            { name: "Ethereum", symbol: "ETH", price: 3872.12, change: 67.25, changePercent: 1.77 },
+            { name: "Gold", symbol: "GC", price: 2240.80, change: 15.30, changePercent: 0.69 },
+            { name: "Crude Oil", symbol: "CL", price: 75.82, change: -0.32, changePercent: -0.42 },
+            { name: "EUR/USD", symbol: "EUR", price: 1.0842, change: 0.0023, changePercent: 0.21 }
+        ];
+        
+        // Sample news data
+        const newsData = [
+            {
+                title: "Federal Reserve Holds Interest Rates Steady",
+                description: "The Federal Reserve announced it will maintain current interest rates following its latest policy meeting.",
+                time: "2 hours ago"
+            },
+            {
+                title: "Tech Stocks Rally on Strong Earnings Reports",
+                description: "Major technology companies exceed analyst expectations, pushing the Nasdaq to new heights.",
+                time: "3 hours ago"
+            },
+            {
+                title: "Oil Prices Drop on Higher-Than-Expected Inventory",
+                description: "Crude oil futures declined after the EIA reported an unexpected rise in U.S. stockpiles.",
+                time: "5 hours ago"
+            },
+            {
+                title: "Treasury Yields Rise Ahead of Jobs Report",
+                description: "U.S. Treasury yields moved higher as investors position themselves ahead of Friday's employment data.",
+                time: "6 hours ago"
+            },
+            {
+                title: "Retail Sales Beat Expectations in Q1",
+                description: "Consumer spending showed resilience despite inflation concerns, according to the latest data.",
+                time: "8 hours ago"
+            },
+            {
+                title: "Global Markets Respond to Central Bank Decisions",
+                description: "International markets show mixed reactions to recent monetary policy announcements from major central banks.",
+                time: "10 hours ago"
+            }
+        ];
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const addCustomChannelButton = document.getElementById('add-custom-channel');
+            const customChannelNameInput = document.getElementById('custom-channel-name');
+            const customVideoIdInput = document.getElementById('custom-video-id');
+            const videosSection = document.getElementById('videos-section');
+            const marketGrid = document.getElementById('market-grid');
+            const marketTicker = document.getElementById('market-ticker');
+            const newsFeed = document.getElementById('news-feed');
+            const timeDisplay = document.getElementById('time-display');
+            const chartButtons = document.querySelectorAll('.chart-button');
+            
+            // Initialize market data
+            initializeMarketData();
+            
+            // Initialize news feed
+            initializeNewsFeed();
+            
+            // Update time display
+            updateTime();
+            setInterval(updateTime, 1000);
+            
+            // Add custom channel
+            addCustomChannelButton.addEventListener('click', function() {
+                const channelName = customChannelNameInput.value.trim() || 'Custom Channel';
+                const videoId = customVideoIdInput.value.trim();
+                
+                if (videoId) {
+                    // Create new channel element
+                    const channelElement = document.createElement('div');
+                    channelElement.className = 'channel';
+                    channelElement.innerHTML = `
+                        <div class="channel-header">
+                            <div class="channel-name">${channelName}</div>
+                            <div class="channel-controls">
+                                <a href="https://www.youtube.com/watch?v=${videoId}" class="direct-link" target="_blank">Open</a>
+                                <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                                <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                            </div>
+                        </div>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                        </div>
+                    `;
+                    
+                    // Add to videos section
+                    videosSection.appendChild(channelElement);
+                    
+                    // Clear inputs
+                    customChannelNameInput.value = '';
+                    customVideoIdInput.value = '';
+                }
+            });
+            
+            // Chart period buttons
+            chartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    chartButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    // In a real app, this would update the chart
+                });
+            });
+            
+            // Function to initialize market data
+            function initializeMarketData() {
+                // Populate market grid
+                marketData.forEach(item => {
+                    const changeClass = item.change >= 0 ? 'change-up' : 'change-down';
+                    const changeSign = item.change >= 0 ? '+' : '';
+                    
+                    const marketItem = document.createElement('div');
+                    marketItem.className = 'market-item';
+                    marketItem.innerHTML = `
+                        <div class="market-name">${item.name}</div>
+                        <div class="market-price">$${item.price.toLocaleString()}</div>
+                        <div class="market-change ${changeClass}">
+                            ${changeSign}${item.change.toLocaleString()} (${changeSign}${item.changePercent.toFixed(2)}%)
+                        </div>
+                    `;
+                    
+                    marketGrid.appendChild(marketItem);
+                    
+                    // Also add to ticker
+                    const tickerItem = document.createElement('div');
+                    tickerItem.className = 'ticker-item';
+                    tickerItem.innerHTML = `
+                        <span>${item.symbol}: $${item.price.toLocaleString()} </span>
+                        <span class="${changeClass}">${changeSign}${item.changePercent.toFixed(2)}%</span>
+                    `;
+                    
+                    marketTicker.appendChild(tickerItem);
+                });
+            }
+            
+            // Function to initialize news feed
+            function initializeNewsFeed() {
+                newsData.forEach(item => {
+                    const newsItem = document.createElement('div');
+                    newsItem.className = 'news-item';
+                    newsItem.innerHTML = `
+                        <div class="news-time">${item.time}</div>
+                        <div class="news-title">${item.title}</div>
+                        <div class="news-description">${item.description}</div>
+                    `;
+                    
+                    newsFeed.appendChild(newsItem);
+                });
+            }
+            
+            // Function to update time display
+            function updateTime() {
+                const now = new Date();
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+                
+                timeDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+            }
+            
+            // Simulate periodic updates
+            setInterval(function() {
+                // Update market data with small random changes
+                marketData.forEach(item => {
+                    const randomChange = (Math.random() - 0.5) * 0.2;
+                    item.price = Math.max(0, item.price * (1 + randomChange / 100));
+                    item.change = item.price * (item.changePercent / 100) * (1 + randomChange);
+                    item.changePercent = item.changePercent * (1 + randomChange / 10);
+                });
+                
+                // In a real app, we would update the UI with new data
+            }, 60000); // Update every minute
+        });
+        
+        // Function to refresh a channel's video
+        function refreshChannel(button) {
+            const channel = button.closest('.channel');
+            const iframe = channel.querySelector('iframe');
+            const src = iframe.src;
+            iframe.src = src;
+        }
+        
+        // Function to remove a channel
+        function removeChannel(button) {
+            const channel = button.closest('.channel');
+            channel.remove();
+        }
+    </script>
+</body>
+</html>
