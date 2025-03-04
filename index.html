@@ -388,9 +388,28 @@
     </style>
 </head>
 <body>
+
+      <style>
+      
+     h1 {
+    font-family: Arial, sans-serif;
+    font-size: 45px; /* Adjusted to be smaller */
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+h1 span {
+    color: #E50914; /* Netflix Red */
+    font-size: 55px; /* Bigger N */
+}
+
+    </style>
     <div class="container">
         <header>
-            <h1>NEWSFEED</h1>
+<h1><span>N</span>EWSFEED</h1>
             <div class="time-display" id="time-display">--:--:--</div>
         </header>
         
@@ -403,22 +422,60 @@
         <!-- Video section at the top -->
         <div class="videos-section" id="videos-section">
             <!-- Channel 1 - Bloomberg -->
-            <div class="channel">
+          
 
 
-            <div class="channel-header">
-                <div class="channel-name">Bloomberg</div>
-                <div class="channel-controls">
-                    <a href="https://www.youtube.com/watch?v=OlUMDZchivQ" class="direct-link" target="_blank">Open</a>
-                    <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
-                    <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    <div class="channel">
+                <div class="channel-header">
+                    <div class="channel-name">Bloomberg</div>
+                    <div class="channel-controls">
+ 
+                        <a href="https://www.youtube.com/watch?v=iEpJwprxDdk" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/iEpJwprxDdk?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
             </div>
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/OlUMDZchivQ?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+
+
+
+        
+            
+            <!-- Channel 3 - Yahoo Finance -->
+            <div class="channel">
+                <div class="channel-header">
+                    <div class="channel-name">Yahoo Finance</div>
+                    <div class="channel-controls">
+                        <a href="https://www.youtube.com/watch?v=KQp-e_XQnDE" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/KQp-e_XQnDE?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
             </div>
-        </div> 
+
     
+            <!-- Channel 2 - CNBC -->
+            <div class="channel">
+                <div class="channel-header">
+                    <div class="channel-name">NBC</div>
+                    <div class="channel-controls">
+                        <a href="https://www.youtube.com/watch?v=rASLSPJG1zg" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/rASLSPJG1zg?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+
             <!-- Channel 2 - CNBC -->
             <div class="channel">
                 <div class="channel-header">
@@ -433,40 +490,12 @@
                     <iframe src="https://www.youtube.com/embed/9NyxcX3rhQs?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
             </div>
+
+
             
-            <!-- Channel 3 - Yahoo Finance -->
-            <div class="channel">
-
-            <div class="channel-header">
-                <div class="channel-name">Yahoo Finance</div>
-                <div class="channel-controls">
-                    <a href="https://www.youtube.com/watch?v=YbYxN5JPF0c" class="direct-link" target="_blank">Open</a>
-                    <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
-                    <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
-                </div>
-            </div>
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/YbYxN5JPF0c?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </div>
+        
         </div>
-     
-              <!-- Channel 3 - Reuters -->
-              <div class="channel">
-
-              <div class="channel-header">
-                <div class="channel-name">Reuters/div>
-                <div class="channel-controls">
-                    <a href="https://www.youtube.com/watch?v=OkW7MKEBDUc" class="direct-link" target="_blank">Open</a>
-                    <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
-                    <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
-                </div>
-            </div>
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/OkW7MKEBDUc?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </div>
-        </div>
-    
-    </div> 
+        
         <!-- Dashboard content below videos -->
         <div class="dashboard-content">
             <div class="left-column">
@@ -710,5 +739,50 @@
             channel.remove();
         }
     </script>
+
+
+
+     <div class="videos-section" id="videos-section">
+            <!-- Channel 1 - Bloomberg -->
+          
+
+
+                    <div class="channel">
+                <div class="channel-header">
+                    <div class="channel-name">Schwab</div>
+                    <div class="channel-controls">
+ 
+                        <a href="https://www.youtube.com/watch?v=EK76hBAOMEk" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/EK76hBAOMEk?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+
+
+
+
+        
+            
+            <!-- Channel 3 - Yahoo Finance -->
+            <div class="channel">
+                <div class="channel-header">
+                    <div class="channel-name">FOX</div>
+                    <div class="channel-controls">
+                        <a href="https://www.youtube.com/watch?v=TX36Vnekx7Q" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/TX36Vnekx7Q?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+  </div>
+
+
 </body>
 </html>
