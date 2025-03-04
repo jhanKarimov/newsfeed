@@ -590,7 +590,7 @@ updateClock();
             <div class="left-column">
                 <div class="chart-container">
                     <div class="chart-header">
-                        <div class="chart-title">S&P 500 (SPY) CHART</div>
+                        <div class="chart-title">S&P 500 (SPY)</div>
                         <div class="chart-controls">
                             <button class="chart-button" data-period="1d">1D</button>
                             <button class="chart-button active" data-period="5d">5D</button>
@@ -599,30 +599,9 @@ updateClock();
                             <button class="chart-button" data-period="1y">1Y</button>
                         </div>
                     </div>
-                    <div id="chart" style="width: 100%; height: 400px;">
-                        <!-- TradingView Widget BEGIN -->
-                        <div class="tradingview-widget-container">
-                            <div id="tradingview_spy"></div>
-                            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-                            <script type="text/javascript">
-                            new TradingView.widget({
-                                "width": "90%",
-                                "height": "90%",
-                                "symbol": "SPY",
-                                "interval": "D",
-                                "timezone": "Etc/UTC",
-                                "theme": "dark",
-                                "style": "1",
-                                "locale": "en",
-                                "toolbar_bg": "#f1f3f6",
-                                "enable_publishing": false,
-                                "hide_side_toolbar": false,
-                                "allow_symbol_change": true,
-                                "container_id": "tradingview_spy"
-                            });
-                            </script>
-                        </div>
-                        <!-- TradingView Widget END -->
+                    <div id="chart" style="width: 100%; height: 90%;">
+                        <!-- Chart will be inserted here by JavaScript -->
+                        <img src="/api/placeholder/800/300" alt="SPY Chart Placeholder" style="width: 100%; height: 100%; object-fit: cover;" />
                     </div>
                 </div>
                 
@@ -635,8 +614,12 @@ updateClock();
             </div>
             
             <div class="right-column">
-
-                 <div class="custom-channel">
+                <div class="news-feed" id="news-feed">
+                    <div class="news-header">Financial News</div>
+                    <!-- News items will be added by JavaScript -->
+                </div>
+                
+                <div class="custom-channel">
                     <div class="custom-channel-title">Add Custom Channel</div>
                     <div class="url-input-group">
                         <input type="text" class="url-input" id="custom-channel-name" placeholder="Channel Name">
@@ -644,23 +627,12 @@ updateClock();
                         <button class="add-channel-button" id="add-custom-channel">Add Channel</button>
                     </div>
                 </div>
-                <br>
-                <div class="news-feed" id="news-feed">
-                    <div class="news-header">Financial News</div>
-                    <!-- News items will be added by JavaScript -->
-                </div>
-                
-
-
-               
             </div>
         </div>
     </div>
     
     <footer>
-        <!-- Financial News & Market Dashboard &copy; 2025 | Dark Theme -->
-
-        - - - - - - 
+        Financial News & Market Dashboard &copy; 2025 | Dark Theme
     </footer>
 
     <script>
@@ -941,188 +913,6 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
   </div>
 
-
-<footer class="modern-footer">
-    <div class="footer-container">
-        <div class="footer-main">
-            <div class="footer-brand">
-                <span class="footer-logo">NEWSFEED</span>
-                <p class="footer-slogan">Financial News & Market Dashboard</p>
-            </div>
-            
-            <div class="footer-columns">
-                <div class="footer-section">
-                    <h4>Markets Live</h4>
-                    <ul class="market-data">
-                        <li>NASDAQ <span class="up">▲ 1.25%</span></li>
-                        <li>S&P 500 <span class="down">▼ 0.42%</span></li>
-                        <li>DOW JONES <span class="up">▲ 0.78%</span></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">Market Analysis</a></li>
-                        <li><a href="#">Economic Calendar</a></li>
-                        <li><a href="#">Sector Performance</a></li>
-                        <li><a href="#">Contact Research</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Connect</h4>
-                    <div class="social-links">
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-copyright">
-            © 2025 NEWSFEED | Developed by JHAN | Financial Data Powered by MarketStack API
-        </div>
-    </div>
-</footer>
-
-<style>
-.modern-footer {
-    background: linear-gradient(145deg, #0f172a, #1e293b);
-    color: #94a3b8;
-    padding: 4rem 0 2rem;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    border-top: 1px solid #334155;
-}
-
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-.footer-main {
-    display: grid;
-    gap: 3rem;
-    padding-bottom: 3rem;
-    border-bottom: 1px solid #334155;
-}
-
-.footer-brand {
-    text-align: center;
-}
-
-.footer-logo {
-    display: block;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #38bdf8;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    background: linear-gradient(45deg, #38bdf8, #818cf8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.footer-slogan {
-    font-size: 1.1rem;
-    color: #64748b;
-    margin-top: 0.5rem;
-}
-
-.footer-columns {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.footer-section h4 {
-    color: #f8fafc;
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-bottom: 0.5rem;
-}
-
-.footer-section h4:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 2px;
-    background: #38bdf8;
-}
-
-.market-data li {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #334155;
-}
-
-.market-data .up { color: #4ade80; }
-.market-data .down { color: #f87171; }
-
-.footer-links li {
-    margin: 0.8rem 0;
-}
-
-.footer-links a {
-    color: #94a3b8;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-    color: #38bdf8;
-}
-
-.social-links {
-    display: flex;
-    gap: 1.5rem;
-    margin-top: 1rem;
-}
-
-.social-icon {
-    font-size: 1.5rem;
-    color: #64748b;
-    transition: all 0.3s ease;
-}
-
-.social-icon:hover {
-    color: #38bdf8;
-    transform: translateY(-2px);
-}
-
-.footer-copyright {
-    text-align: center;
-    padding-top: 2rem;
-    margin-top: 2rem;
-    font-size: 0.9rem;
-    color: #64748b;
-}
-
-@media (max-width: 768px) {
-    .footer-columns {
-        grid-template-columns: 1fr;
-    }
-    
-    .footer-brand {
-        text-align: left;
-    }
-    
-    .footer-logo {
-        font-size: 2rem;
-    }
-}
-
-/* Add Font Awesome for icons */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
-</style>
 
 </body>
 </html>
