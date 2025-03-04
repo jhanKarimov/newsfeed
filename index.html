@@ -91,13 +91,34 @@
             gap: 10px;
             margin-bottom: 10px;
         }
-        
-        .channel {
-            background-color: var(--bg-card);
-            border-radius: var(--card-radius);
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+        @media (max-width: 1024px) {
+    .videos-section {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    }
+}
+
+/* Adjust for small screens (mobile) */
+@media (max-width: 600px) {
+    .videos-section {
+        grid-template-columns: repeat(1, 1fr); /* 1 column */
+    }
+}
+
+       .channel {
+    background-color: var(--bg-card);
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    cursor: grab;
+    transition: transform 0.2s ease-in-out;
+}
+
+.channel:active {
+    cursor: grabbing;
+    transform: scale(1.05);
+}
+
         
         .channel-header {
             padding: 8px 15px;
@@ -303,12 +324,23 @@
             font-size: 0.9rem;
             color: var(--text-secondary);
         }
-        
-        .time-display {
-            text-align: right;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
+.time-display {
+    text-align: right;
+    font-size: 1.5rem; /* Bigger, but still clean */
+    font-weight: bold;
+    font-family: 'Roboto Mono', monospace;
+    color: rgba(255, 255, 255, 0.6); /* Subtle white */
+    padding: 5px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    backdrop-filter: blur(5px); /* Soft blur effect */
+    background: rgba(255, 255, 255, 0.05); /* Very transparent */
+}
+
+.time-display .hour {
+    color: #E50914; /* Netflix Red for the hour */
+}
+
         
         .custom-channel {
             background-color: var(--bg-card);
@@ -389,6 +421,8 @@
 </head>
 <body>
 
+
+
       <style>
       
      h1 {
@@ -401,16 +435,71 @@
     text-align: center;
 }
 
+.clock {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5); /* Slightly transparent dark background */
+  padding: 15px;
+  border-radius: 8px;
+  display: inline-block;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px); /* Soft blur effect */
+}
+
+#hour {
+  color: #FF6F61; /* Different color for the hour */
+}
+
+#minute, #second {
+  color: #F0F0F0; /* Light grey for minutes & seconds */
+}
+
 h1 span {
     color: #E50914; /* Netflix Red */
     font-size: 55px; /* Bigger N */
 }
 
     </style>
+  <!--   <script type="text/javascript">
+        function updateTime() {
+    const timeDisplay = document.getElementById("time-display");
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    timeDisplay.textContent = timeString;
+}
+
+setInterval(updateTime, 1000); // Update every second
+updateTime(); // Initial call
+
+    </script> -->
+<script>
+    function updateClock() {
+    const now = new Date();
+    let hour = now.getHours().toString().padStart(2, '0');
+    let minute = now.getMinutes().toString().padStart(2, '0');
+    let second = now.getSeconds().toString().padStart(2, '0');
+  
+    document.getElementById('hour').textContent = hour;
+    document.getElementById('minute').textContent = minute;
+    document.getElementById('second').textContent = second;
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+
+</script>
     <div class="container">
         <header>
 <h1><span>N</span>EWSFEED</h1>
-            <div class="time-display" id="time-display">--:--:--</div>
+            <!-- <div class="time-display" id="time-display">--:--:--</div> -->
+
+            <div class="clock">
+  <span id="hour">--</span>:<span id="minute">--</span>:<span id="second">--</span>
+</div>
+
         </header>
         
         <div class="ticker-container">
@@ -739,9 +828,50 @@ h1 span {
             channel.remove();
         }
     </script>
+ <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const channels = document.querySelectorAll(".channel");
+    const container = document.querySelector(".videos-section");
 
+    let draggedItem = null;
 
+    channels.forEach(channel => {
+        channel.draggable = true;
 
+        channel.addEventListener("dragstart", (e) => {
+            draggedItem = channel;
+            setTimeout(() => channel.style.opacity = "0.5", 0);
+        });
+
+        channel.addEventListener("dragend", () => {
+            setTimeout(() => {
+                draggedItem.style.opacity = "1";
+                draggedItem = null;
+            }, 0);
+        });
+
+        channel.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(container, e.clientY);
+            if (afterElement == null) {
+                container.appendChild(draggedItem);
+            } else {
+                container.insertBefore(draggedItem, afterElement);
+            }
+        });
+    });
+
+    function getDragAfterElement(container, y) {
+        const draggableElements = [...container.querySelectorAll(".channel:not(.dragging)")];
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            return offset < 0 && offset > closest.offset ? { offset, element: child } : closest;
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+});
+
+ </script>
      <div class="videos-section" id="videos-section">
             <!-- Channel 1 - Bloomberg -->
           
