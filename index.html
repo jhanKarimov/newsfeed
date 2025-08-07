@@ -851,6 +851,20 @@ updateClock();
                         <!-- Market items will be added by JavaScript -->
                     </div>
                 </div>
+
+                <div class="market-overview">
+                    <div class="market-header">Top Gainers</div>
+                    <div class="market-grid" id="top-gainers">
+                        <!-- Top gainers will be added by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="market-overview">
+                    <div class="market-header">Top Losers</div>
+                    <div class="market-grid" id="top-losers">
+                        <!-- Top losers will be added by JavaScript -->
+                    </div>
+                </div>
             </div>
             
             <div class="right-column">
@@ -1212,6 +1226,48 @@ updateClock();
         // Initial render
         renderFeedList();
         fetchAndRenderNews();
+
+        const fmpApiKey = "17f878df37c77a6639d18562383a5a3c";
+
+        async function fetchMarketMovers() {
+            try {
+                const [gainersResponse, losersResponse] = await Promise.all([
+                    fetch(`https://financialmodelingprep.com/api/v3/stock_market/gainers?apikey=${fmpApiKey}`),
+                    fetch(`https://financialmodelingprep.com/api/v3/stock_market/losers?apikey=${fmpApiKey}`)
+                ]);
+
+                const gainersData = await gainersResponse.json();
+                const losersData = await losersResponse.json();
+
+                renderMarketMovers('top-gainers', gainersData);
+                renderMarketMovers('top-losers', losersData);
+
+            } catch (error) {
+                console.error("Error fetching market movers:", error);
+            }
+        }
+
+        function renderMarketMovers(containerId, data) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            data.slice(0, 10).forEach(item => {
+                const changeClass = item.changesPercentage > 0 ? 'change-up' : 'change-down';
+                const marketItem = document.createElement('div');
+                marketItem.className = 'market-item';
+                marketItem.innerHTML = `
+                    <div class="market-name">${item.symbol}</div>
+                    <div class="market-price">${item.price.toLocaleString()}</div>
+                    <div class="market-change ${changeClass}">
+                        +${item.changesPercentage.toFixed(2)}%
+                    </div>
+                `;
+                container.appendChild(marketItem);
+            });
+        }
+
+        fetchMarketMovers();
+
     </script>
  <script>
 document.addEventListener("DOMContentLoaded", () => {
