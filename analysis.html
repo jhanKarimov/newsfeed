@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Analysis - NEWSFEED</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span>N</span>EWSFEED</h1>
+            <nav>
+                <a href="index.html">Dashboard</a>
+                <a href="analysis.html">Analysis</a>
+            </nav>
+        </header>
+
+        <div class="dashboard-content">
+            <div class="left-column">
+                <div class="market-overview">
+                    <div class="market-header">My Notes</div>
+                    <textarea id="notes" placeholder="Jot down your trading ideas here..."></textarea>
+                    <button id="save-notes">Save Notes</button>
+                </div>
+            </div>
+            <div class="right-column">
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const notes = document.getElementById('notes');
+        const saveButton = document.getElementById('save-notes');
+
+        // Load saved notes
+        const savedNotes = localStorage.getItem('tradingNotes');
+        if (savedNotes) {
+            notes.value = savedNotes;
+        }
+
+        // Save notes
+        saveButton.addEventListener('click', () => {
+            localStorage.setItem('tradingNotes', notes.value);
+            alert('Notes saved!');
+        });
+    </script>
+</body>
+</html>
