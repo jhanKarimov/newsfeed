@@ -367,6 +367,13 @@ document.addEventListener('DOMContentLoaded', () => {
             color: var(--text-primary);
         }
         
+        .feed-item img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+
         .news-feed {
             background-color: var(--bg-card);
             border-radius: var(--card-radius);
@@ -692,11 +699,33 @@ updateClock();
 
         </header>
         
-        <div class="ticker-container">
-            <div class="ticker" id="market-ticker">
-                <!-- Ticker items will be added by JavaScript -->
-            </div>
-        </div>
+        <!-- TradingView Ticker Tape Widget -->
+    <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+        {
+          "symbols": [
+            { "proName": "FOREXCOM:SPXUSD", "title": "S&P 500" },
+            { "proName": "NASDAQ:HOOD", "title": "Robinhood" },
+            { "proName": "NYSE:PLTR", "title": "Palantir" },
+            { "proName": "NYSE:RKLB", "title": "Rocket Lab" },
+            { "proName": "NASDAQ:AAPL", "title": "Apple" },
+            { "proName": "NASDAQ:MSFT", "title": "Microsoft" },
+            { "proName": "NASDAQ:GOOGL", "title": "Google" },
+            { "proName": "NASDAQ:AMZN", "title": "Amazon" },
+            { "proName": "NASDAQ:TSLA", "title": "Tesla" },
+            { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
+            { "proName": "BITSTAMP:ETHUSD", "title": "Ethereum" }
+          ],
+          "showSymbolLogo": true,
+          "colorTheme": "dark",
+          "isTransparent": true,
+          "displayMode": "adaptive",
+          "locale": "en"
+        }
+        </script>
+    </div>
+    <!-- End TradingView Ticker Tape Widget -->
         
         <!-- Video section at the top -->
         <div class="videos-section" id="videos-section">
@@ -1080,7 +1109,7 @@ updateClock();
                 const description = document.createElement('p');
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = item.description;
-                description.textContent = (tempDiv.textContent || tempDiv.innerText || "").substring(0, 280) + '...';
+                description.textContent = (tempDiv.textContent || tempDiv.innerText || "").substring(0, 140) + '...';
 
                 const pubDate = document.createElement('small');
                 pubDate.textContent = new Date(item.pubDate).toLocaleString();
@@ -1096,6 +1125,14 @@ updateClock();
                 readMoreLink.target = '_blank';
 
                 listItem.appendChild(titleLink);
+
+                if (item.enclosure && item.enclosure.link) {
+                    const image = document.createElement('img');
+                    image.setAttribute('data-src', item.enclosure.link);
+                    image.classList.add('lazy');
+                    listItem.appendChild(image);
+                }
+
                 listItem.appendChild(description);
                 listItem.appendChild(sourceSpan);
                 listItem.appendChild(pubDate);
@@ -1103,6 +1140,22 @@ updateClock();
                 listItem.appendChild(readMoreLink);
 
                 feedElement.appendChild(listItem);
+            });
+
+            const lazyImages = document.querySelectorAll('.lazy');
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const image = entry.target;
+                        image.src = image.dataset.src;
+                        image.classList.remove('lazy');
+                        observer.unobserve(image);
+                    }
+                });
+            });
+
+            lazyImages.forEach(image => {
+                imageObserver.observe(image);
             });
         }
 
@@ -1211,16 +1264,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     <div class="channel">
                 <div class="channel-header">
-                    <div class="channel-name">Schwab</div>
+                    <div class="channel-name">Schwab Network</div>
                     <div class="channel-controls">
  
-                        <a href="https://www.youtube.com/watch?v=EK76hBAOMEk" class="direct-link" target="_blank">Open</a>
+                        <a href="https://www.youtube.com/c/SchwabNetwork/live" class="direct-link" target="_blank">Open</a>
                         <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
                         <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
                     </div>
                 </div>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/EK76hBAOMEk?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/live_stream?channel=UCe_C3B1l24_1tXQAN_xSEaA&autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
             </div>
 
