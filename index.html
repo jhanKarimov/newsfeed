@@ -27,6 +27,66 @@
     
     <!-- Robots -->
     <meta name="robots" content="index, follow">
+
+    <script>
+        // Mute Toggle Functionality
+document.addEventListener('DOMContentLoaded', () => {
+    let isMuted = false;
+    const muteTriggers = [];
+
+    // Function to toggle mute
+    function toggleMute() {
+        isMuted = !isMuted;
+        
+        // Mute all audio and video elements
+        document.querySelectorAll('audio, video').forEach(media => {
+            media.muted = isMuted;
+        });
+
+        // Update mute icon
+        updateMuteIcon();
+    }
+
+    // Create mute toggle icon
+    function createMuteIcon() {
+        const muteIcon = document.createElement('div');
+        muteIcon.innerHTML = isMuted 
+            ? '🔇' // Muted icon 
+            : '🔊'; // Unmuted icon
+        muteIcon.style.cursor = 'pointer';
+        muteIcon.style.fontSize = '24px';
+        muteIcon.style.position = 'fixed';
+        muteIcon.style.top = '10px';
+        muteIcon.style.right = '10px';
+        muteIcon.style.zIndex = '1000';
+        
+        muteIcon.addEventListener('click', toggleMute);
+        document.body.appendChild(muteIcon);
+        
+        return muteIcon;
+    }
+
+    // Update mute icon appearance
+    function updateMuteIcon() {
+        const existingIcon = document.querySelector('#muteIcon');
+        if (existingIcon) {
+            existingIcon.textContent = isMuted ? '🔇' : '🔊';
+        }
+    }
+
+    // Keyboard mute toggle
+    document.addEventListener('keydown', (event) => {
+        // Mute/unmute when 'm' is pressed
+        if (event.key.toLowerCase() === 'm') {
+            toggleMute();
+        }
+    });
+
+    // Create mute icon when page loads
+    const muteIcon = createMuteIcon();
+    muteIcon.id = 'muteIcon';
+});
+        </script>
     <style>
         :root {
             --bg-dark: #121212;
@@ -312,7 +372,7 @@
             border-radius: var(--card-radius);
             padding: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-height: 300px;
+            max-height: 400px;
             overflow-y: auto;
         }
         
@@ -439,6 +499,113 @@
             .market-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+        }
+
+        #feed-management-section, #news-filter-section {
+            background-color: #050505;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #003300;
+        }
+        #feed-management-section input[type="text"], #news-filter-section input[type="text"] {
+            width: calc(100% - 100px);
+            padding: 10px;
+            background-color: #1a1a1f;
+            border: 1px solid #005500;
+            color: #00ff00;
+            font-family: 'Share Tech Mono', monospace;
+            margin-right: 10px;
+        }
+        #feed-management-section button, #news-filter-section button {
+            padding: 10px 15px;
+            background-color: #008800;
+            border: none;
+            color: #ffffff;
+            font-family: 'Share Tech Mono', monospace;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #feed-management-section button:hover, #news-filter-section button:hover {
+            background-color: #00cc00;
+        }
+        #feed-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        #feed-list li {
+            background-color: #080808;
+            border: 1px solid #003300;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #feed-list li button {
+            background-color: #880000;
+            padding: 5px 10px;
+        }
+        #feed-list li button:hover {
+            background-color: #cc0000;
+        }
+        #feed {
+            list-style: none;
+            padding: 0;
+        }
+        .feed-item {
+            background-color: #080808;
+            border: 1px solid #003300;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 0;
+            transition: border-color 0.3s ease;
+        }
+        .feed-item:hover {
+            border-color: #00ff00;
+        }
+        .feed-item a {
+            text-decoration: none;
+            color: #00ff00;
+            font-size: 1.2em;
+            font-weight: normal;
+            transition: color 0.3s ease;
+        }
+        .feed-item a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        .feed-item p {
+            color: #cccccc;
+            margin: 10px 0 0;
+            font-size: 0.95em;
+        }
+        .feed-item small {
+            color: #555555;
+            font-size: 0.8em;
+        }
+        .feed-item .source {
+            font-size: 0.8em;
+            color: #00cc00;
+            margin-top: 5px;
+            display: block;
+        }
+        .feed-item .read-more {
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        .feed-item .read-more:hover {
+            text-decoration: underline;
+        }
+        #loading {
+            text-align: center;
+            font-size: 1.2em;
+            color: #00ff00;
+            padding: 40px;
         }
     </style>
 </head>
@@ -668,14 +835,19 @@ updateClock();
                     </div>
                 </div>
                 <br>
-                <div class="news-feed" id="news-feed">
-                    <div class="news-header">Financial News</div>
-                    <!-- News items will be added by JavaScript -->
+                <div id="feed-management-section">
+                    <input type="text" id="newFeedUrl" placeholder="Add RSS Feed URL (e.g., https://www.cnbc.com/id/10000664/device/rss/rss.html)">
+                    <button id="addFeedButton">Add Feed</button>
+                    <ul id="feed-list"></ul>
                 </div>
-                
-
-
-               
+        
+                <h1>Market News</h1>
+                <div id="news-filter-section">
+                    <input type="text" id="newsSearchInput" placeholder="Filter news by keyword...">
+                </div>
+                <ul id="feed">
+                    <p id="loading">Loading news feeds...</p>
+                </ul>
             </div>
         </div>
     </div>
@@ -699,40 +871,6 @@ updateClock();
             { name: "EUR/USD", symbol: "EUR", price: 1.0842, change: 0.0023, changePercent: 0.21 }
         ];
         
-        // Sample news data
-        const newsData = [
-            {
-                title: "Federal Reserve Holds Interest Rates Steady",
-                description: "The Federal Reserve announced it will maintain current interest rates following its latest policy meeting.",
-                time: "2 hours ago"
-            },
-            {
-                title: "Tech Stocks Rally on Strong Earnings Reports",
-                description: "Major technology companies exceed analyst expectations, pushing the Nasdaq to new heights.",
-                time: "3 hours ago"
-            },
-            {
-                title: "Oil Prices Drop on Higher-Than-Expected Inventory",
-                description: "Crude oil futures declined after the EIA reported an unexpected rise in U.S. stockpiles.",
-                time: "5 hours ago"
-            },
-            {
-                title: "Treasury Yields Rise Ahead of Jobs Report",
-                description: "U.S. Treasury yields moved higher as investors position themselves ahead of Friday's employment data.",
-                time: "6 hours ago"
-            },
-            {
-                title: "Retail Sales Beat Expectations in Q1",
-                description: "Consumer spending showed resilience despite inflation concerns, according to the latest data.",
-                time: "8 hours ago"
-            },
-            {
-                title: "Global Markets Respond to Central Bank Decisions",
-                description: "International markets show mixed reactions to recent monetary policy announcements from major central banks.",
-                time: "10 hours ago"
-            }
-        ];
-        
         document.addEventListener('DOMContentLoaded', function() {
             const addCustomChannelButton = document.getElementById('add-custom-channel');
             const customChannelNameInput = document.getElementById('custom-channel-name');
@@ -740,15 +878,11 @@ updateClock();
             const videosSection = document.getElementById('videos-section');
             const marketGrid = document.getElementById('market-grid');
             const marketTicker = document.getElementById('market-ticker');
-            const newsFeed = document.getElementById('news-feed');
             const timeDisplay = document.getElementById('time-display');
             const chartButtons = document.querySelectorAll('.chart-button');
             
             // Initialize market data
             initializeMarketData();
-            
-            // Initialize news feed
-            initializeNewsFeed();
             
             // Update time display
             updateTime();
@@ -826,21 +960,6 @@ updateClock();
                 });
             }
             
-            // Function to initialize news feed
-            function initializeNewsFeed() {
-                newsData.forEach(item => {
-                    const newsItem = document.createElement('div');
-                    newsItem.className = 'news-item';
-                    newsItem.innerHTML = `
-                        <div class="news-time">${item.time}</div>
-                        <div class="news-title">${item.title}</div>
-                        <div class="news-description">${item.description}</div>
-                    `;
-                    
-                    newsFeed.appendChild(newsItem);
-                });
-            }
-            
             // Function to update time display
             function updateTime() {
                 const now = new Date();
@@ -878,6 +997,168 @@ updateClock();
             const channel = button.closest('.channel');
             channel.remove();
         }
+
+        const defaultFeedUrls = [
+            { url: 'https://feeds.reuters.com/reuters/businessNews', name: 'Reuters Business' },
+            { url: 'https://feeds.marketwatch.com/marketwatch/topstories/', name: 'MarketWatch' },
+            { url: 'https://finance.yahoo.com/rss/topstories', name: 'Yahoo Finance' },
+            { url: 'https://seekingalpha.com/market_news.xml', name: 'Seeking Alpha' },
+            { url: 'https://feeds.bbci.co.uk/news/politics/rss.xml', name: 'BBC Politics' }
+        ];
+
+        let currentFeedUrls = JSON.parse(localStorage.getItem('customFeedUrls')) || defaultFeedUrls;
+
+        const feedElement = document.getElementById('feed');
+        const loadingElement = document.getElementById('loading');
+        const newFeedUrlInput = document.getElementById('newFeedUrl');
+        const addFeedButton = document.getElementById('addFeedButton');
+        const feedList = document.getElementById('feed-list');
+        const newsSearchInput = document.getElementById('newsSearchInput');
+
+        let allNewsItems = []; // Store all fetched news items for filtering
+
+        function saveFeeds() {
+            localStorage.setItem('customFeedUrls', JSON.stringify(currentFeedUrls));
+            renderFeedList();
+        }
+
+        function addFeed() {
+            const url = newFeedUrlInput.value.trim();
+            if (url) {
+                // Prompt for a name for the feed
+                const name = prompt("Enter a name for this feed (e.g., 'My Custom Feed'):");
+                if (name !== null && name.trim() !== '') {
+                    const newFeed = { url: url, name: name.trim() };
+                    if (!currentFeedUrls.some(feed => feed.url === newFeed.url)) {
+                        currentFeedUrls.push(newFeed);
+                        newFeedUrlInput.value = '';
+                        saveFeeds();
+                        fetchAndRenderNews(); // Re-fetch news with new feed
+                    } else {
+                        alert("This feed URL already exists.");
+                    }
+                } else {
+                    alert("Feed name cannot be empty.");
+                }
+            }
+        }
+
+        function removeFeed(urlToRemove) {
+            currentFeedUrls = currentFeedUrls.filter(feed => feed.url !== urlToRemove);
+            saveFeeds();
+            fetchAndRenderNews(); // Re-fetch news after removing feed
+        }
+
+        function renderFeedList() {
+            feedList.innerHTML = '';
+            currentFeedUrls.forEach(feed => {
+                const li = document.createElement('li');
+                li.textContent = `${feed.name} (${feed.url})`;
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Remove';
+                removeBtn.onclick = () => removeFeed(feed.url);
+                li.appendChild(removeBtn);
+                feedList.appendChild(li);
+            });
+        }
+
+        function renderNews(itemsToRender) {
+            feedElement.innerHTML = '';
+            if (itemsToRender.length === 0) {
+                feedElement.innerHTML = '<p style="text-align: center; color: #555;">No news items found.</p>';
+                return;
+            }
+            itemsToRender.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.className = 'feed-item';
+
+                const titleLink = document.createElement('a');
+                titleLink.href = item.link;
+                titleLink.textContent = item.title;
+                titleLink.target = '_blank';
+
+                const description = document.createElement('p');
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = item.description;
+                description.textContent = (tempDiv.textContent || tempDiv.innerText || "").substring(0, 280) + '...';
+
+                const pubDate = document.createElement('small');
+                pubDate.textContent = new Date(item.pubDate).toLocaleString();
+
+                const sourceSpan = document.createElement('span');
+                sourceSpan.className = 'source';
+                sourceSpan.textContent = `Source: ${item.feedName || 'Unknown'}`;
+
+                const readMoreLink = document.createElement('a');
+                readMoreLink.href = item.link;
+                readMoreLink.textContent = 'Read More';
+                readMoreLink.className = 'read-more';
+                readMoreLink.target = '_blank';
+
+                listItem.appendChild(titleLink);
+                listItem.appendChild(description);
+                listItem.appendChild(sourceSpan);
+                listItem.appendChild(pubDate);
+                listItem.appendChild(document.createElement('br'));
+                listItem.appendChild(readMoreLink);
+
+                feedElement.appendChild(listItem);
+            });
+        }
+
+        async function fetchAndRenderNews() {
+            loadingElement.style.display = 'block';
+            feedElement.innerHTML = ''; // Clear existing news
+            allNewsItems = []; // Clear previous news items
+
+            const fetchPromises = currentFeedUrls.map(feed =>
+                fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'ok' && data.items) {
+                            return data.items.map(item => ({ ...item, feedName: feed.name }));
+                        } else {
+                            console.error(`Error fetching feed ${feed.url}:`, data.message || 'Unknown error');
+                            return [];
+                        }
+                    })
+                    .catch(error => {
+                        console.error(`Network error fetching feed ${feed.url}:`, error);
+                        return [];
+                    })
+            );
+
+            const fetchedItemsArrays = await Promise.all(fetchPromises);
+
+            loadingElement.style.display = 'none';
+
+            fetchedItemsArrays.forEach(items => {
+                allNewsItems = allNewsItems.concat(items);
+            });
+
+            allNewsItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+            renderNews(allNewsItems);
+        }
+
+        function filterNews() {
+            const searchTerm = newsSearchInput.value.toLowerCase();
+            const filteredItems = allNewsItems.filter(item =>
+                item.title.toLowerCase().includes(searchTerm) ||
+                item.description.toLowerCase().includes(searchTerm)
+            );
+            renderNews(filteredItems);
+        }
+
+        // Event Listeners
+        addFeedButton.addEventListener('click', addFeed);
+        newFeedUrlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addFeed();
+        });
+        newsSearchInput.addEventListener('keyup', filterNews);
+
+        // Initial render
+        renderFeedList();
+        fetchAndRenderNews();
     </script>
  <script>
 document.addEventListener("DOMContentLoaded", () => {
