@@ -697,3 +697,52 @@ font-size: 2rem;
 /* Add Font Awesome for icons */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
+/* Controls bar under header */
+.controls-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 10px 0 15px;
+}
+.controls-bar button {
+  background-color: #2a2a2a;
+  color: var(--text-primary);
+  border: 1px solid #3a3a3a;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.controls-bar button:hover { background-color: #3a3a3a; }
+
+/* Chips */
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  background: #1f2937;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+}
+.chip.positive { background: #064e3b; color: #34d399; border-color: #065f46; }
+.chip.negative { background: #4c0519; color: #fca5a5; border-color: #7f1d1d; }
+.chip.neutral { background: #1f2937; color: #9ca3af; border-color: #334155; }
+
+/* Sentiment borders for news items */
+.feed-item.sent-pos { border-left: 3px solid #22c55e; }
+.feed-item.sent-neg { border-left: 3px solid #ef4444; }
+.feed-item.sent-neu { border-left: 3px solid #475569; }
+
+/* Compact mode */
+body.compact .channel { padding: 6px; }
+body.compact .market-item { padding: 6px; }
+body.compact .news-feed { padding: 10px; }
+body.compact .feed-item { padding: 12px; }
+body.compact .chart-container { height: 300px; }
+body.compact .chart-button { padding: 4px 6px; font-size: 0.75rem; }
+
+/* Trending tickers card */
+#trending-tickers .news-header { display: flex; align-items: center; gap: 8px; }
+#trending-tickers .chip { cursor: pointer; }
+

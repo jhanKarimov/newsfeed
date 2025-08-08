@@ -127,6 +127,11 @@ updateClock();
 
         </header>
         
+        <div class="controls-bar" role="group" aria-label="Page controls">
+            <button id="toggle-compact">Toggle Compact</button>
+            <button id="refresh-news">Refresh News</button>
+        </div>
+
         <!-- TradingView Ticker Tape Widget -->
     <div class="tradingview-widget-container">
         <div class="tradingview-widget-container__widget"></div>
@@ -297,6 +302,11 @@ updateClock();
                     </div>
                 </div>
 
+                <div class="market-overview" id="trending-tickers">
+                    <div class="news-header">Trending Tickers</div>
+                    <div class="chip-row" id="trending-row"></div>
+                </div>
+
                 <div class="market-overview">
                     <div class="market-header">Top Gainers</div>
                     <div class="market-grid" id="top-gainers">
@@ -418,9 +428,13 @@ updateClock();
             const chartButtons = document.querySelectorAll('.chart-button');
             const newsSourceSelect = document.getElementById('newsSourceSelect');
             const newsTimeSelect = document.getElementById('newsTimeSelect');
+            const toggleCompactBtn = document.getElementById('toggle-compact');
+            const refreshNewsBtn = document.getElementById('refresh-news');
+            const trendingRow = document.getElementById('trending-row');
             
             // Initialize market data
             initializeMarketData();
+            renderTrending();
             
             // Add custom channel
             addCustomChannelButton.addEventListener('click', function() {
@@ -508,6 +522,17 @@ updateClock();
                     item.changePercent = item.changePercent * (1 + randomChange / 10);
                 });
             }, 60000); // Update every minute
+
+            // Compact mode toggle
+            toggleCompactBtn.addEventListener('click', () => {
+                document.body.classList.toggle('compact');
+            });
+            // Manual refresh
+            refreshNewsBtn.addEventListener('click', () => {
+                // Bust cache and refetch
+                try { localStorage.removeItem(NEWS_CACHE_KEY); } catch {}
+                fetchAndRenderNews();
+            });
 
             // Lazy-load YouTube iframes
             const iframeObserver = new IntersectionObserver((entries, obs) => {
@@ -635,6 +660,10 @@ updateClock();
             itemsToRender.forEach(item => {
                 const listItem = document.createElement('li');
                 listItem.className = 'feed-item';
+                // Sentiment border modifier
+                if (item.sentimentScore > 1) listItem.classList.add('sent-pos');
+                else if (item.sentimentScore < -1) listItem.classList.add('sent-neg');
+                else listItem.classList.add('sent-neu');
 
                 const headerWrap = document.createElement('div');
                 headerWrap.style.display = 'flex';
@@ -717,6 +746,19 @@ updateClock();
 
             lazyImages.forEach(image => {
                 imageObserver.observe(image);
+            });
+        }
+
+        function renderTrending() {
+            if (!trendingRow) return;
+            trendingRow.innerHTML = '';
+            const top = marketData.slice(0, 6);
+            top.forEach(t => {
+                const chip = document.createElement('span');
+                const isUp = t.change >= 0;
+                chip.className = 'chip ' + (isUp ? 'positive' : 'negative');
+                chip.textContent = `${t.symbol} ${isUp ? '▲' : '▼'} ${Math.abs(t.changePercent).toFixed(2)}%`;
+                trendingRow.appendChild(chip);
             });
         }
 
