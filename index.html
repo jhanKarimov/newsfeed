@@ -88,63 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
         </script>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sentiment@5.0.2/dist/sentiment.min.js"></script>
 </head>
 <body>
 
 
 
-      <style>
-      
-     h1 {
-    font-family: Arial, sans-serif;
-    font-size: 45px; /* Adjusted to be smaller */
-    font-weight: bold;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-align: center;
-}
+<!-- Removed large inline <style> block; styles live in style.css -->
 
-.clock {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.5); /* Slightly transparent dark background */
-  padding: 15px;
-  border-radius: 8px;
-  display: inline-block;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(5px); /* Soft blur effect */
-}
-
-#hour {
-  color: #FF6F61; /* Different color for the hour */
-}
-
-#minute, #second {
-  color: #F0F0F0; /* Light grey for minutes & seconds */
-}
-
-h1 span {
-    color: #E50914; /* Netflix Red */
-    font-size: 55px; /* Bigger N */
-}
-
-    </style>
-  <!--   <script type="text/javascript">
-        function updateTime() {
-    const timeDisplay = document.getElementById("time-display");
-    const now = new Date();
-    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-    timeDisplay.textContent = timeString;
-}
-
-setInterval(updateTime, 1000); // Update every second
-updateTime(); // Initial call
-
-    </script> -->
 <script>
     function updateClock() {
     const now = new Date();
@@ -207,30 +158,21 @@ updateClock();
         <!-- Video section at the top -->
         <div class="videos-section" id="videos-section">
             <!-- Channel 1 - Bloomberg -->
-          
-
-
-                    <div class="channel">
+            <div class="channel">
                 <div class="channel-header">
                     <div class="channel-name">Bloomberg</div>
                     <div class="channel-controls">
- 
                         <a href="https://www.youtube.com/watch?v=iEpJwprxDdk" class="direct-link" target="_blank">Open</a>
                         <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
                         <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
                     </div>
                 </div>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/iEpJwprxDdk?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe data-src="https://www.youtube.com/embed/iEpJwprxDdk?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
             </div>
-
-
-
-
-        
             
-            <!-- Channel 3 - Yahoo Finance -->
+            <!-- Channel - Yahoo Finance -->
             <div class="channel">
                 <div class="channel-header">
                     <div class="channel-name">Yahoo Finance</div>
@@ -241,12 +183,11 @@ updateClock();
                     </div>
                 </div>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/KQp-e_XQnDE?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe data-src="https://www.youtube.com/embed/KQp-e_XQnDE?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
             </div>
 
-    
-            <!-- Channel 2 - CNBC -->
+            <!-- Channel - NBC -->
             <div class="channel">
                 <div class="channel-header">
                     <div class="channel-name">NBC</div>
@@ -257,11 +198,11 @@ updateClock();
                     </div>
                 </div>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/HPq9NK485JU?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe data-src="https://www.youtube.com/embed/HPq9NK485JU?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
             </div>
 
-            <!-- Channel 2 - CNBC -->
+            <!-- Channel - CNBC -->
             <div class="channel">
                 <div class="channel-header">
                     <div class="channel-name">CNBC</div>
@@ -272,13 +213,40 @@ updateClock();
                     </div>
                 </div>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/9NyxcX3rhQs?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe data-src="https://www.youtube.com/embed/9NyxcX3rhQs?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
             </div>
 
+            <!-- Channel - Schwab Network -->
+            <div class="channel">
+                <div class="channel-header">
+                    <div class="channel-name">Schwab Network</div>
+                    <div class="channel-controls">
+                        <a href="https://www.youtube.com/c/SchwabNetwork/live" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe data-src="https://www.youtube.com/embed/live_stream?channel=UCe_C3B1l24_1tXQAN_xSEaA&autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
 
-            
-        
+            <!-- Channel - FOX -->
+            <div class="channel">
+                <div class="channel-header">
+                    <div class="channel-name">FOX</div>
+                    <div class="channel-controls">
+                        <a href="https://www.youtube.com/watch?v=5vjHcZah-78" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe data-src="https://www.youtube.com/embed/5vjHcZah-78?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+
         </div>
         
         <!-- Dashboard content below videos -->
@@ -353,28 +321,40 @@ updateClock();
                         <input type="text" class="url-input" id="custom-video-id" placeholder="YouTube Video ID (e.g., dQw4w9WgXcQ)">
                         <button class="add-channel-button" id="add-custom-channel">Add Channel</button>
                     </div>
-                </div>
-                <br>
-                <div id="feed-management-section">
+                 </div>
+                 <br>
+                 <div id="feed-management-section">
                     <input type="text" id="newFeedUrl" placeholder="Add RSS Feed URL (e.g., https://www.cnbc.com/id/10000664/device/rss/rss.html)">
                     <button id="addFeedButton">Add Feed</button>
                     <ul id="feed-list"></ul>
-                </div>
-        
-                <h1>Market News</h1>
-                <div id="news-filter-section">
+                 </div>
+         
+                 <h1>Market News</h1>
+                 <div id="news-filter-section">
                     <input type="text" id="newsSearchInput" placeholder="Filter news by keyword...">
-                </div>
-                <ul id="feed">
+                    <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                        <select id="newsSourceSelect" aria-label="Filter by source">
+                            <option value="all">All sources</option>
+                        </select>
+                        <select id="newsTimeSelect" aria-label="Filter by time">
+                            <option value="any">Any time</option>
+                            <option value="1h">Last 1h</option>
+                            <option value="6h">Last 6h</option>
+                            <option value="24h">Last 24h</option>
+                            <option value="7d">Last 7d</option>
+                        </select>
+                    </div>
+                 </div>
+                 <ul id="feed">
                     <p id="loading">Loading news feeds...</p>
-                </ul>
+                 </ul>
 
-                <div class="news-feed" id="twitter-feed">
+                 <div class="news-feed" id="twitter-feed">
                     <div class="news-header">Twitter Feed</div>
                     <a class="twitter-timeline" data-height="400" data-theme="dark" href="https://twitter.com/MarketWatch?ref_src=twsrc%5Etfw">Tweets by MarketWatch</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                </div>
+                 </div>
 
-                <div class="news-feed" id="economic-calendar">
+                 <div class="news-feed" id="economic-calendar">
                     <div class="news-header">Economic Calendar</div>
                     <div class="tradingview-widget-container">
                         <div class="tradingview-widget-container__widget"></div>
@@ -389,9 +369,9 @@ updateClock();
                         }
                         </script>
                     </div>
-                </div>
+                 </div>
 
-                <div class="news-feed" id="sector-performance" style="height: 450px;">
+                 <div class="news-feed" id="sector-performance" style="height: 450px;">
                     <div class="news-header">Sector Performance</div>
                     <div class="tradingview-widget-container">
                         <div class="tradingview-widget-container__widget"></div>
@@ -408,16 +388,12 @@ updateClock();
                         }
                         </script>
                     </div>
-                </div>
+                 </div>
             </div>
         </div>
     </div>
     
-    <footer>
-        <!-- Financial News & Market Dashboard &copy; 2025 | Dark Theme -->
-
-        - - - - - - 
-    </footer>
+    <!-- Removed duplicate plain footer; keeping modern footer only -->
 
     <script>
         // Sample market data (since we can't make actual API calls)
@@ -439,15 +415,12 @@ updateClock();
             const videosSection = document.getElementById('videos-section');
             const marketGrid = document.getElementById('market-grid');
             const marketTicker = document.getElementById('market-ticker');
-            const timeDisplay = document.getElementById('time-display');
             const chartButtons = document.querySelectorAll('.chart-button');
+            const newsSourceSelect = document.getElementById('newsSourceSelect');
+            const newsTimeSelect = document.getElementById('newsTimeSelect');
             
             // Initialize market data
             initializeMarketData();
-            
-            // Update time display
-            updateTime();
-            setInterval(updateTime, 1000);
             
             // Add custom channel
             addCustomChannelButton.addEventListener('click', function() {
@@ -468,12 +441,16 @@ updateClock();
                             </div>
                         </div>
                         <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                            <iframe data-src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                         </div>
                     `;
                     
                     // Add to videos section
                     videosSection.appendChild(channelElement);
+                    
+                    // Observe for lazy loading
+                    const iframe = channelElement.querySelector('iframe');
+                    if (iframe) observeIframe(iframe);
                     
                     // Clear inputs
                     customChannelNameInput.value = '';
@@ -509,48 +486,59 @@ updateClock();
                     
                     marketGrid.appendChild(marketItem);
                     
-                    // Also add to ticker
-                    const tickerItem = document.createElement('div');
-                    tickerItem.className = 'ticker-item';
-                    tickerItem.innerHTML = `
-                        <span>${item.symbol}: $${item.price.toLocaleString()} </span>
-                        <span class="${changeClass}">${changeSign}${item.changePercent.toFixed(2)}%</span>
-                    `;
-                    
-                    marketTicker.appendChild(tickerItem);
+                    // Also add to ticker if present in DOM
+                    if (marketTicker) {
+                        const tickerItem = document.createElement('div');
+                        tickerItem.className = 'ticker-item';
+                        tickerItem.innerHTML = `
+                            <span>${item.symbol}: $${item.price.toLocaleString()} </span>
+                            <span class="${changeClass}">${changeSign}${item.changePercent.toFixed(2)}%</span>
+                        `;
+                        marketTicker.appendChild(tickerItem);
+                    }
                 });
             }
             
-            // Function to update time display
-            function updateTime() {
-                const now = new Date();
-                const hours = now.getHours().toString().padStart(2, '0');
-                const minutes = now.getMinutes().toString().padStart(2, '0');
-                const seconds = now.getSeconds().toString().padStart(2, '0');
-                
-                timeDisplay.textContent = `${hours}:${minutes}:${seconds}`;
-            }
-            
-            // Simulate periodic updates
+            // Simulate periodic updates (placeholder)
             setInterval(function() {
-                // Update market data with small random changes
                 marketData.forEach(item => {
                     const randomChange = (Math.random() - 0.5) * 0.2;
                     item.price = Math.max(0, item.price * (1 + randomChange / 100));
                     item.change = item.price * (item.changePercent / 100) * (1 + randomChange);
                     item.changePercent = item.changePercent * (1 + randomChange / 10);
                 });
-                
-                // In a real app, we would update the UI with new data
             }, 60000); // Update every minute
+
+            // Lazy-load YouTube iframes
+            const iframeObserver = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const ifr = entry.target;
+                        if (!ifr.src && ifr.dataset.src) {
+                            ifr.src = ifr.dataset.src;
+                        }
+                        obs.unobserve(ifr);
+                    }
+                });
+            }, { rootMargin: '200px' });
+
+            function observeIframe(iframe) {
+                iframeObserver.observe(iframe);
+            }
+
+            document.querySelectorAll('.video-container iframe').forEach(observeIframe);
         });
         
         // Function to refresh a channel's video
         function refreshChannel(button) {
             const channel = button.closest('.channel');
             const iframe = channel.querySelector('iframe');
-            const src = iframe.src;
-            iframe.src = src;
+            const src = iframe.dataset.src || iframe.src;
+            if (src) {
+                // Reset src to force reload
+                iframe.src = '';
+                setTimeout(() => { iframe.src = src; }, 0);
+            }
         }
         
         // Function to remove a channel
@@ -575,18 +563,23 @@ updateClock();
         const addFeedButton = document.getElementById('addFeedButton');
         const feedList = document.getElementById('feed-list');
         const newsSearchInput = document.getElementById('newsSearchInput');
+        const newsSourceSelect = document.getElementById('newsSourceSelect');
+        const newsTimeSelect = document.getElementById('newsTimeSelect');
 
         let allNewsItems = []; // Store all fetched news items for filtering
+        const NEWS_CACHE_KEY = 'cachedNewsV1';
+        const NEWS_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
         function saveFeeds() {
             localStorage.setItem('customFeedUrls', JSON.stringify(currentFeedUrls));
             renderFeedList();
+            // Update sources dropdown
+            syncSourcesDropdown();
         }
 
         function addFeed() {
             const url = newFeedUrlInput.value.trim();
             if (url) {
-                // Prompt for a name for the feed
                 const name = prompt("Enter a name for this feed (e.g., 'My Custom Feed'):");
                 if (name !== null && name.trim() !== '') {
                     const newFeed = { url: url, name: name.trim() };
@@ -623,6 +616,16 @@ updateClock();
             });
         }
 
+        function syncSourcesDropdown() {
+            const selected = newsSourceSelect.value;
+            newsSourceSelect.innerHTML = '<option value="all">All sources</option>' +
+                currentFeedUrls.map(f => `<option value="${f.name}">${f.name}</option>`).join('');
+            // Keep previous selection if possible
+            if ([...newsSourceSelect.options].some(o => o.value === selected)) {
+                newsSourceSelect.value = selected;
+            }
+        }
+
         function renderNews(itemsToRender) {
             feedElement.innerHTML = '';
             if (itemsToRender.length === 0) {
@@ -633,15 +636,40 @@ updateClock();
                 const listItem = document.createElement('li');
                 listItem.className = 'feed-item';
 
+                const headerWrap = document.createElement('div');
+                headerWrap.style.display = 'flex';
+                headerWrap.style.alignItems = 'center';
+                headerWrap.style.gap = '8px';
+
                 const titleLink = document.createElement('a');
                 titleLink.href = item.link;
                 titleLink.textContent = item.title;
                 titleLink.target = '_blank';
+                titleLink.style.display = '-webkit-box';
+                titleLink.style.webkitLineClamp = '2';
+                titleLink.style.webkitBoxOrient = 'vertical';
+                titleLink.style.overflow = 'hidden';
+
+                const sentimentChip = document.createElement('span');
+                sentimentChip.textContent = (item.sentimentScore > 1 ? 'Bullish' : item.sentimentScore < -1 ? 'Bearish' : 'Neutral');
+                sentimentChip.style.fontSize = '0.75rem';
+                sentimentChip.style.padding = '2px 6px';
+                sentimentChip.style.borderRadius = '10px';
+                sentimentChip.style.background = item.sentimentScore > 1 ? '#064e3b' : item.sentimentScore < -1 ? '#4c0519' : '#1f2937';
+                sentimentChip.style.color = item.sentimentScore > 1 ? '#34d399' : item.sentimentScore < -1 ? '#fca5a5' : '#9ca3af';
+
+                headerWrap.appendChild(titleLink);
+                headerWrap.appendChild(sentimentChip);
 
                 const description = document.createElement('p');
                 const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = item.description;
+                tempDiv.innerHTML = item.description || '';
                 description.textContent = (tempDiv.textContent || tempDiv.innerText || "").substring(0, 140) + '...';
+
+                const metaRow = document.createElement('div');
+                metaRow.style.display = 'flex';
+                metaRow.style.gap = '12px';
+                metaRow.style.flexWrap = 'wrap';
 
                 const pubDate = document.createElement('small');
                 pubDate.textContent = new Date(item.pubDate).toLocaleString();
@@ -656,7 +684,7 @@ updateClock();
                 readMoreLink.className = 'read-more';
                 readMoreLink.target = '_blank';
 
-                listItem.appendChild(titleLink);
+                listItem.appendChild(headerWrap);
 
                 if (item.enclosure && item.enclosure.link) {
                     const image = document.createElement('img');
@@ -666,8 +694,9 @@ updateClock();
                 }
 
                 listItem.appendChild(description);
-                listItem.appendChild(sourceSpan);
-                listItem.appendChild(pubDate);
+                metaRow.appendChild(sourceSpan);
+                metaRow.appendChild(pubDate);
+                listItem.appendChild(metaRow);
                 listItem.appendChild(document.createElement('br'));
                 listItem.appendChild(readMoreLink);
 
@@ -691,11 +720,63 @@ updateClock();
             });
         }
 
+        function normalizeTitle(text) {
+            return (text || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+        }
+
+        function dedupe(items) {
+            const seen = new Map();
+            items.forEach(it => {
+                const key = it.link || normalizeTitle(it.title);
+                const existing = seen.get(key);
+                if (!existing || new Date(it.pubDate) > new Date(existing.pubDate)) {
+                    seen.set(key, it);
+                }
+            });
+            return Array.from(seen.values());
+        }
+
+        function enrichSentiment(items) {
+            const s = new Sentiment();
+            return items.map(it => {
+                const score = s.analyze(it.title || '').score;
+                return { ...it, sentimentScore: score };
+            });
+        }
+
+        function applyFilters(items) {
+            const term = (newsSearchInput.value || '').toLowerCase();
+            const source = newsSourceSelect.value;
+            const timeWindow = newsTimeSelect.value;
+            const now = Date.now();
+            let minTs = 0;
+            if (timeWindow === '1h') minTs = now - 1 * 60 * 60 * 1000;
+            else if (timeWindow === '6h') minTs = now - 6 * 60 * 60 * 1000;
+            else if (timeWindow === '24h') minTs = now - 24 * 60 * 60 * 1000;
+            else if (timeWindow === '7d') minTs = now - 7 * 24 * 60 * 60 * 1000;
+
+            return items.filter(item => {
+                const inSource = source === 'all' || item.feedName === source;
+                const inTime = !minTs || new Date(item.pubDate).getTime() >= minTs;
+                const inText = !term || (item.title && item.title.toLowerCase().includes(term)) || (item.description && item.description.toLowerCase().includes(term));
+                return inSource && inTime && inText;
+            });
+        }
+
         async function fetchAndRenderNews() {
             loadingElement.style.display = 'block';
-            feedElement.innerHTML = ''; // Clear existing news
-            allNewsItems = []; // Clear previous news items
+            feedElement.innerHTML = '';
 
+            // Try cache first
+            try {
+                const cached = JSON.parse(localStorage.getItem(NEWS_CACHE_KEY) || 'null');
+                if (cached && (Date.now() - cached.timestamp) < NEWS_CACHE_TTL_MS) {
+                    allNewsItems = cached.items || [];
+                    renderNews(applyFilters(allNewsItems));
+                }
+            } catch {}
+
+            // Always fetch fresh in background
             const fetchPromises = currentFeedUrls.map(feed =>
                 fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`)
                     .then(response => response.json())
@@ -717,21 +798,28 @@ updateClock();
 
             loadingElement.style.display = 'none';
 
-            fetchedItemsArrays.forEach(items => {
-                allNewsItems = allNewsItems.concat(items);
-            });
+            // Flatten
+            let items = [];
+            fetchedItemsArrays.forEach(arr => { items = items.concat(arr); });
+            // Sort newest first
+            items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+            // Deduplicate
+            items = dedupe(items);
+            // Enrich sentiment
+            items = enrichSentiment(items);
 
-            allNewsItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-            renderNews(allNewsItems);
+            allNewsItems = items;
+            // Cache
+            try { localStorage.setItem(NEWS_CACHE_KEY, JSON.stringify({ timestamp: Date.now(), items })); } catch {}
+
+            // Populate sources dropdown from current feeds (once)
+            syncSourcesDropdown();
+
+            renderNews(applyFilters(allNewsItems));
         }
 
         function filterNews() {
-            const searchTerm = newsSearchInput.value.toLowerCase();
-            const filteredItems = allNewsItems.filter(item =>
-                item.title.toLowerCase().includes(searchTerm) ||
-                item.description.toLowerCase().includes(searchTerm)
-            );
-            renderNews(filteredItems);
+            renderNews(applyFilters(allNewsItems));
         }
 
         // Event Listeners
@@ -740,9 +828,12 @@ updateClock();
             if (e.key === 'Enter') addFeed();
         });
         newsSearchInput.addEventListener('keyup', filterNews);
+        newsSourceSelect.addEventListener('change', filterNews);
+        newsTimeSelect.addEventListener('change', filterNews);
 
         // Initial render
         renderFeedList();
+        syncSourcesDropdown();
         fetchAndRenderNews();
 
         const fmpApiKey = "17f878df37c77a6639d18562383a5a3c";
@@ -836,47 +927,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
  </script>
-     <div class="videos-section" id="videos-section">
-            <!-- Channel 1 - Bloomberg -->
-          
-
-
-                    <div class="channel">
-                <div class="channel-header">
-                    <div class="channel-name">Schwab Network</div>
-                    <div class="channel-controls">
  
-                        <a href="https://www.youtube.com/c/SchwabNetwork/live" class="direct-link" target="_blank">Open</a>
-                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
-                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
-                    </div>
-                </div>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/live_stream?channel=UCe_C3B1l24_1tXQAN_xSEaA&autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                </div>
-            </div>
-
-
-
-
-        
-            
-            <!-- Channel 3 - Yahoo Finance -->
-            <div class="channel">
-                <div class="channel-header">
-                    <div class="channel-name">FOX</div>
-                    <div class="channel-controls">
-                        <a href="https://www.youtube.com/watch?v=5vjHcZah-78" class="direct-link" target="_blank">Open</a>
-                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
-                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
-                    </div>
-                </div>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/5vjHcZah-78?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                </div>
-            </div>
-  </div>
-
+<!-- Removed duplicate videos-section block here -->
 
 <footer class="modern-footer">
     <div class="footer-container">
@@ -924,141 +976,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 </footer>
 
-<style>
-.modern-footer {
-    background: linear-gradient(145deg, #0f172a, #1e293b);
-    color: #94a3b8;
-    padding: 4rem 0 2rem;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    border-top: 1px solid #334155;
-}
-
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-.footer-main {
-    display: grid;
-    gap: 3rem;
-    padding-bottom: 3rem;
-    border-bottom: 1px solid #334155;
-}
-
-.footer-brand {
-    text-align: center;
-}
-
-.footer-logo {
-    display: block;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #38bdf8;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    background: linear-gradient(45deg, #38bdf8, #818cf8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.footer-slogan {
-    font-size: 1.1rem;
-    color: #64748b;
-    margin-top: 0.5rem;
-}
-
-.footer-columns {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.footer-section h4 {
-    color: #f8fafc;
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-bottom: 0.5rem;
-}
-
-.footer-section h4:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 2px;
-    background: #38bdf8;
-}
-
-.market-data li {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #334155;
-}
-
-.market-data .up { color: #4ade80; }
-.market-data .down { color: #f87171; }
-
-.footer-links li {
-    margin: 0.8rem 0;
-}
-
-.footer-links a {
-    color: #94a3b8;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-    color: #38bdf8;
-}
-
-.social-links {
-    display: flex;
-    gap: 1.5rem;
-    margin-top: 1rem;
-}
-
-.social-icon {
-    font-size: 1.5rem;
-    color: #64748b;
-    transition: all 0.3s ease;
-}
-
-.social-icon:hover {
-    color: #38bdf8;
-    transform: translateY(-2px);
-}
-
-.footer-copyright {
-    text-align: center;
-    padding-top: 2rem;
-    margin-top: 2rem;
-    font-size: 0.9rem;
-    color: #64748b;
-}
-
-@media (max-width: 768px) {
-    .footer-columns {
-        grid-template-columns: 1fr;
-    }
-    
-    .footer-brand {
-        text-align: left;
-    }
-    
-    .footer-logo {
-        font-size: 2rem;
-    }
-}
-
-/* Add Font Awesome for icons */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
-</style>
+<!-- Removed duplicated inline footer styles; using style.css -->
 
 </body>
 </html>
