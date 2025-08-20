@@ -57,14 +57,91 @@
 				background-clip: text;
 			}
 
-			header input[type='search'] {
-				padding: 10px;
-				width: 100%;
-				height: 32px;
-				max-width: 400px;
-				border: 1px solid #ccc;
-				border-radius: 20px;
-			}
+			.ticker-search {
+                padding: 10px 20px;
+                width: 100%;
+                height: 40px;
+                max-width: 400px;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 20px;
+                color: #fff;
+                font-size: 16px;
+                transition: all 0.3s ease;
+            }
+
+            .ticker-search:focus {
+                outline: none;
+                border-color: #E50914;
+                background: rgba(255, 255, 255, 0.15);
+                box-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
+            }
+
+            .ticker-search::placeholder {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+            .search-container {
+                position: relative;
+                max-width: 400px;
+                width: 100%;
+            }
+
+            .search-container button {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                color: #E50914;
+                cursor: pointer;
+                padding: 5px;
+                transition: all 0.3s ease;
+            }
+
+            .search-container button:hover {
+                color: #ff0a16;
+            }
+
+            .suggestions {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(18, 18, 18, 0.95);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 10px;
+                margin-top: 5px;
+                max-height: 300px;
+                overflow-y: auto;
+                z-index: 1000;
+                backdrop-filter: blur(10px);
+            }
+
+            .suggestion-item {
+                padding: 10px 20px;
+                cursor: pointer;
+                color: #fff;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .suggestion-item:hover {
+                background: rgba(229, 9, 20, 0.2);
+            }
+
+            .suggestion-symbol {
+                font-weight: bold;
+                color: #E50914;
+            }
+
+            .suggestion-name {
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 0.9em;
+            }
 
 			footer {
 				flex-direction: column;
@@ -158,6 +235,40 @@
 	<body>
 	    <header>
 <h1><span>N</span>EWSFEED</h1>
+
+   <nav class="nav-menu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ticker.html">Ticker</a></li>
+         
+        </ul>
+    </nav>   <style>
+        .nav-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .nav-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.5);
+            transition: background 0.3s;
+            font-family: Arial, sans-serif;
+        }
+        .nav-menu a:hover {
+            background: rgba(229, 9, 20, 0.8);
+        }
+    </style>
 
 <style>     h1 {
     font-family: Arial, sans-serif;
@@ -279,6 +390,182 @@ h1 span {
 			<!-- TradingView Widget END -->
 		</nav>
 		<main>
+            <form class="search-container" onsubmit="handleSearch(event)">
+    <input type="text" 
+           class="ticker-search" 
+           placeholder="Enter ticker symbol (e.g., AAPL, GOOGL)" 
+           required>
+    <button type="submit">🔍</button>
+</form>
+<script>
+    function updateTicker(newSymbol) {
+        // Remove the pattern restriction from input
+        document.querySelector('.ticker-search').removeAttribute('pattern');
+        
+        // Ensure symbol has proper prefix if not present
+        if (!newSymbol.includes(':')) {
+            newSymbol = 'NASDAQ:' + newSymbol;
+        }
+
+        // Update all widget containers
+        document.querySelectorAll('.tradingview-widget-container').forEach(container => {
+            const widget = container.querySelector('.tradingview-widget-container__widget');
+            const script = container.querySelector('script');
+            
+            if (script) {
+                try {
+                    // Remove the old widget
+                    if (widget) {
+                        widget.innerHTML = '';
+                    }
+
+                    // Create new script element
+                    const newScript = document.createElement('script');
+                    newScript.type = 'text/javascript';
+                    newScript.src = script.src;
+                    newScript.async = true;
+
+                    // Get the original config
+                    let config = {};
+                    try {
+                        config = JSON.parse(script.textContent.trim());
+                    } catch (e) {
+                        console.warn('Could not parse original config:', e);
+                    }
+
+                    // Update the configuration based on widget type
+                    if (script.src.includes('embed-widget-ticker-tape')) {
+                        // For ticker tape, update all symbols
+                        if (config.symbols) {
+                            config.symbols = config.symbols.map(s => ({
+                                ...s,
+                                proName: newSymbol
+                            }));
+                        }
+                    } else {
+                        // For all other widgets, just update the symbol
+                        config.symbol = newSymbol;
+                    }
+
+                    // Set the new configuration
+                    newScript.textContent = JSON.stringify(config, null, 2);
+
+                    // Add the new script to the widget
+                    if (widget) {
+                        widget.appendChild(newScript);
+                    }
+                } catch (e) {
+                    console.error('Error updating widget:', e);
+                }
+            }
+        });
+
+        // Update page title with the new symbol
+        document.title = `${newSymbol.split(':')[1]} - NEWSFEED Ticker`;
+    }
+
+    // Create suggestions container
+    const suggestionsContainer = document.createElement('div');
+    suggestionsContainer.className = 'suggestions';
+    document.querySelector('.search-container').appendChild(suggestionsContainer);
+
+    // Common stock symbols and names for suggestions
+    const commonStocks = [
+        { symbol: 'AAPL', name: 'Apple Inc.', exchange: 'NASDAQ' },
+        { symbol: 'MSFT', name: 'Microsoft Corporation', exchange: 'NASDAQ' },
+        { symbol: 'GOOGL', name: 'Alphabet Inc.', exchange: 'NASDAQ' },
+        { symbol: 'AMZN', name: 'Amazon.com Inc.', exchange: 'NASDAQ' },
+        { symbol: 'META', name: 'Meta Platforms Inc.', exchange: 'NASDAQ' },
+        { symbol: 'TSLA', name: 'Tesla Inc.', exchange: 'NASDAQ' },
+        { symbol: 'NVDA', name: 'NVIDIA Corporation', exchange: 'NASDAQ' },
+        { symbol: 'JPM', name: 'JPMorgan Chase & Co.', exchange: 'NYSE' },
+        { symbol: 'V', name: 'Visa Inc.', exchange: 'NYSE' },
+        { symbol: 'WMT', name: 'Walmart Inc.', exchange: 'NYSE' },
+        { symbol: 'JNJ', name: 'Johnson & Johnson', exchange: 'NYSE' },
+        { symbol: 'MA', name: 'Mastercard Inc.', exchange: 'NYSE' },
+        { symbol: 'PG', name: 'Procter & Gamble Co.', exchange: 'NYSE' },
+        { symbol: 'HD', name: 'Home Depot Inc.', exchange: 'NYSE' },
+        { symbol: 'BAC', name: 'Bank of America Corp.', exchange: 'NYSE' },
+        { symbol: 'DIS', name: 'Walt Disney Co.', exchange: 'NYSE' }
+    ];
+
+    // Function to get symbol suggestions
+    async function fetchSuggestions(query) {
+        query = query.toLowerCase();
+        return commonStocks
+            .filter(stock => 
+                stock.symbol.toLowerCase().includes(query) || 
+                stock.name.toLowerCase().includes(query)
+            )
+            .slice(0, 8);
+    }
+
+    // Function to display suggestions
+    function displaySuggestions(suggestions) {
+        suggestionsContainer.innerHTML = suggestions.map(item => `
+            <div class="suggestion-item" data-symbol="${item.exchange}:${item.symbol}">
+                <span class="suggestion-symbol">${item.symbol}</span>
+                <span class="suggestion-name">${item.name}</span>
+            </div>
+        `).join('');
+
+        // Add click handlers
+        document.querySelectorAll('.suggestion-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const symbol = item.dataset.symbol;
+                document.querySelector('.ticker-search').value = symbol;
+                updateTicker(symbol);
+                suggestionsContainer.innerHTML = '';
+            });
+        });
+    }
+
+    // Add input handler for suggestions
+    let debounceTimer;
+    document.querySelector('.ticker-search').addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        const query = e.target.value;
+        
+        if (query.length < 2) {
+            suggestionsContainer.innerHTML = '';
+            return;
+        }
+
+        debounceTimer = setTimeout(async () => {
+            const suggestions = await fetchSuggestions(query);
+            displaySuggestions(suggestions);
+        }, 300);
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-container')) {
+            suggestionsContainer.innerHTML = '';
+        }
+    });
+
+    function handleSearch(event) {
+        event.preventDefault();
+        const searchInput = document.querySelector('.ticker-search');
+        const symbol = searchInput.value.toUpperCase();
+        if (symbol) {
+            updateTicker(symbol);
+        }
+        suggestionsContainer.innerHTML = '';
+    }
+
+    // Initialize default ticker
+    document.addEventListener('DOMContentLoaded', () => {
+        // Wait for TradingView widgets to load
+        setTimeout(() => {
+            const defaultSymbol = 'AAPL';
+            document.querySelector('.ticker-search').value = defaultSymbol;
+            updateTicker(defaultSymbol);
+        }, 1000);
+    });
+</script>
+
+
 			<section id="symbol-info">
 				<!-- TradingView Widget BEGIN -->
 				<div class="tradingview-widget-container">
@@ -423,16 +710,64 @@ h1 span {
 		</footer>
 	</body>
 	<script>
-		function getQueryParam(param) {
-			let urlSearchParams = new URLSearchParams(window.location.search);
-			return urlSearchParams.get(param);
-		}
-		function readSymbolFromQueryString() {
-			return getQueryParam('tvwidgetsymbol');
-		}
-		const symbol = readSymbolFromQueryString() || 'NASDAQ:AAPL';
-		if (symbol) {
-			document.title = `Stock Details - ${symbol}`;
+		// Wait for DOM to be fully loaded
+		document.addEventListener('DOMContentLoaded', function() {
+			// Initialize search functionality
+			initializeSearch();
+			
+			// Initialize from URL parameter if present
+			function getQueryParam(param) {
+				let urlSearchParams = new URLSearchParams(window.location.search);
+				return urlSearchParams.get(param);
+			}
+			
+			function readSymbolFromQueryString() {
+				return getQueryParam('tvwidgetsymbol');
+			}
+			
+			const symbol = readSymbolFromQueryString() || 'NASDAQ:AAPL';
+			if (symbol) {
+				document.querySelector('.ticker-search').value = symbol;
+				setTimeout(() => updateTicker(symbol), 1000); // Give widgets time to load
+			}
+		});
+
+		// Initialize all search-related functionality
+		function initializeSearch() {
+			const searchContainer = document.querySelector('.search-container');
+			const searchInput = searchContainer.querySelector('.ticker-search');
+			
+			// Create suggestions container if it doesn't exist
+			let suggestionsContainer = searchContainer.querySelector('.suggestions');
+			if (!suggestionsContainer) {
+				suggestionsContainer = document.createElement('div');
+				suggestionsContainer.className = 'suggestions';
+				searchContainer.appendChild(suggestionsContainer);
+			}
+
+			// Add input handler
+			let debounceTimer;
+			searchInput.addEventListener('input', (e) => {
+				clearTimeout(debounceTimer);
+				const query = e.target.value;
+				
+				if (query.length < 2) {
+					suggestionsContainer.innerHTML = '';
+					return;
+				}
+
+				debounceTimer = setTimeout(async () => {
+					const suggestions = await fetchSuggestions(query);
+					displaySuggestions(suggestions, suggestionsContainer);
+				}, 300);
+			});
+
+			// Add click outside handler
+			document.addEventListener('click', (e) => {
+				if (!e.target.closest('.search-container')) {
+					suggestionsContainer.innerHTML = '';
+				}
+			});
 		}
 	</script>
 </html>
