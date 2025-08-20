@@ -98,6 +98,72 @@ grid-template-columns: repeat(1, 1fr); /* 1 column */
 }
 }
 
+/* TradingView Widget Styling */
+.tradingview-widget-container {
+    background-color: var(--bg-card);
+    border-radius: var(--card-radius);
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.tradingview-widget-container__widget {
+    border-radius: var(--card-radius);
+    overflow: hidden;
+}
+
+.tradingview-widget-copyright {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.tradingview-widget-copyright a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.tradingview-widget-copyright a:hover {
+    text-decoration: underline;
+}
+
+/* Heatmap specific styling */
+.heatmap-container {
+    background-color: var(--bg-card);
+    border-radius: var(--card-radius);
+    padding: 15px;
+    margin: 15px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.heatmap-header {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+/* Responsive adjustments for TradingView widgets */
+@media (max-width: 768px) {
+    .tradingview-widget-container {
+        padding: 10px;
+        margin: 8px 0;
+    }
+    
+    .heatmap-container {
+        padding: 10px;
+        margin: 10px 0;
+    }
+    
+    .heatmap-header {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+}
+
 .channel {
 background-color: var(--bg-card);
 border-radius: var(--card-radius);

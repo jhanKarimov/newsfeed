@@ -163,7 +163,7 @@ updateClock();
 </script>
     <div class="container">
         <header>
-<h1><span>N</span>EWS<span>F</span>EED</h1>
+<h1><span>N</span>EWSFEED</h1>
 <!--             <nav>
                 <a href="index.html">Dashboard</a>
                 <a href="analysis.html">Analysis</a>
@@ -248,7 +248,7 @@ updateClock();
             </div>
 
     
-            <!-- Channel 2 - CNBC -->
+            <!-- Channel 3 - Schwab -->
             <div class="channel">
                 <div class="channel-header">
                     <div class="channel-name">Schwab</div>
@@ -263,18 +263,18 @@ updateClock();
                 </div>
             </div>
 
-            <!-- Channel 2 - CNBC -->
+            <!-- Channel 4 - FOX -->
             <div class="channel">
                 <div class="channel-header">
-                    <div class="channel-name">CNBC</div>
+                    <div class="channel-name">FOX</div>
                     <div class="channel-controls">
-                        <a href="https://www.youtube.com/watch?v=sHZlhFtdNjA" class="direct-link" target="_blank">Open</a>
+                        <a href="https://www.youtube.com/watch?v=9jN35AeMJ-Q" class="direct-link" target="_blank">Open</a>
                         <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
                         <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
                     </div>
                 </div>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/sHZlhFtdNjA?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/9jN35AeMJ-Q?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
             </div>
 
@@ -349,31 +349,37 @@ updateClock();
                     </div>
                 </div>
 
-                          <!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container">
-  <div class="tradingview-widget-container__widget"></div>
-  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Stock heatmap by TradingView</span></a></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
-  {
-  "dataSource": "SPX500",
-  "blockSize": "market_cap_basic",
-  "blockColor": "change",
-  "grouping": "sector",
-  "locale": "en",
-  "symbolUrl": "",
-  "colorTheme": "dark",
-  "exchanges": [],
-  "hasTopBar": true,
-  "isDataSetEnabled": true,
-  "isZoomEnabled": true,
-  "hasSymbolTooltip": true,
-  "isMonoSize": false,
-  "width": "500",
-  "height": "500"
-}
-  </script>
-</div>
-<!-- TradingView Widget END -->
+                <!-- Market Heatmap Section -->
+                <div class="heatmap-container">
+                    <div class="heatmap-header">S&P 500 Market Heatmap</div>
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <div class="tradingview-widget-copyright">
+                            <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+                                <span class="blue-text">Stock heatmap by TradingView</span>
+                            </a>
+                        </div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
+                        {
+                        "dataSource": "SPX500",
+                        "blockSize": "market_cap_basic",
+                        "blockColor": "change",
+                        "grouping": "sector",
+                        "locale": "en",
+                        "symbolUrl": "",
+                        "colorTheme": "dark",
+                        "exchanges": [],
+                        "hasTopBar": true,
+                        "isDataSetEnabled": true,
+                        "isZoomEnabled": true,
+                        "hasSymbolTooltip": true,
+                        "isMonoSize": false,
+                        "width": "100%",
+                        "height": "400"
+                        }
+                        </script>
+                    </div>
+                </div>
             </div>
             
             <div class="right-column">
