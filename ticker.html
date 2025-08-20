@@ -23,7 +23,7 @@
 				display: flex;
 				flex-direction: column;
 				align-items: center;
-				background: #fff;
+				background: #121212;
 			}
 
 			header,
@@ -156,10 +156,57 @@
 		</style>
 	</head>
 	<body>
-		<header>
-			<a id="site-logo" href="#">TradingVista</a>
-			<input type="search" placeholder="Search..." />
-		</header>
+	    <header>
+<h1><span>N</span>EWSFEED</h1>
+
+<style>     h1 {
+    font-family: Arial, sans-serif;
+    font-size: 45px; /* Adjusted to be smaller */
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.clock {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5); /* Slightly transparent dark background */
+  padding: 15px;
+  border-radius: 8px;
+  display: inline-block;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px); /* Soft blur effect */
+}
+
+#hour {
+  color: #FF6F61; /* Different color for the hour */
+}
+
+#minute, #second {
+  color: #F0F0F0; /* Light grey for minutes & seconds */
+}
+
+h1 span {
+    color: #E50914; /* Netflix Red */
+    font-size: 55px; /* Bigger N */
+}</style>
+<!--             <nav>
+                <a href="index.html">Dashboard</a>
+                <a href="analysis.html">Analysis</a>
+            </nav> -->
+            <!-- <div class="time-display" id="time-display">--:--:--</div> -->
+
+            <!-- <div class="clock">
+  <span id="hour">--</span>:<span id="minute">--</span>:<span id="second">--</span>
+</div> -->
+			<!-- <input type="search" placeholder="Search..." /> -->
+
+        </header>
+	 
 		<nav id="ticker-tape">
 			<!-- TradingView Widget BEGIN -->
 			<div class="tradingview-widget-container">
@@ -221,7 +268,7 @@
 					  }
 					],
 					"showSymbolLogo": true,
-					"colorTheme": "light",
+					"colorTheme": "dark",
 					"isTransparent": false,
 					"displayMode": "adaptive",
 					"locale": "en",
@@ -245,7 +292,7 @@
 						"symbol": "NASDAQ:AAPL",
 						"width": "100%",
 						"locale": "en",
-						"colorTheme": "light",
+						"colorTheme": "dark",
 						"isTransparent": true
 						 }
 					</script>
@@ -262,7 +309,7 @@
 					"symbol": "NASDAQ:AAPL",
 					"interval": "D",
 					"timezone": "Etc/UTC",
-					"theme": "light",
+					"theme": "dark",
 					"style": "1",
 					"locale": "en",
 					"allow_symbol_change": true,
@@ -285,7 +332,7 @@
 						  {
 						  "width": "100%",
 						  "height": "100%",
-						  "colorTheme": "light",
+						  "colorTheme": "dark",
 						  "isTransparent": true,
 						  "symbol": "NASDAQ:AAPL",
 						  "locale": "en"
@@ -304,7 +351,7 @@
 						async
 					>
 						  {
-						  "colorTheme": "light",
+						  "colorTheme": "dark",
 						  "isTransparent": true,
 						  "largeChartUrl": "",
 						  "displayMode": "adaptive",
@@ -335,7 +382,7 @@
 						"showIntervalTabs": true,
 						"displayMode": "single",
 						"locale": "en",
-						"colorTheme": "light"
+						"colorTheme": "dark"
 						 }
 					</script>
 				</div>
@@ -353,7 +400,7 @@
 						  {
 						  "feedMode": "symbol",
 						  "symbol": "NASDAQ:AAPL",
-						  "colorTheme": "light",
+						  "colorTheme": "dark",
 						  "isTransparent": true,
 						  "displayMode": "regular",
 						  "width": "100%",
@@ -364,36 +411,14 @@
 				</div>
 				<!-- TradingView Widget END -->
 			</section>
-			<section id="powered-by-tv">
-				<svg xmlns="http://www.w3.org/2000/svg" width="157" height="21">
-					<use
-						href="/widget-docs/tradingview-logo.svg#tradingview-logo"
-					></use>
-				</svg>
-				<p>
-					Charts and financial information provided by TradingView, a
-					popular charting & trading platform. Check out even more
-					<a href="https://www.tradingview.com/features/"
-						>advanced features</a
-					>
-					or
-					<a href="https://www.tradingview.com/widget/"
-						>grab charts</a
-					>
-					for your website.
-				</p>
-			</section>
+			 
 		</main>
 		<footer>
-			<p>
-				This example page is part of a tutorial for integrating
-				TradingView widgets into your website.
+			<p style="color: #aeabab;">
+			NEWSFEED   
 			</p>
 			<p>
-				<a
-					href="https://www.tradingview.com/widget-docs/tutorials/build-page/#build-a-page"
-					>View the tutorial</a
-				>
+			 
 			</p>
 		</footer>
 	</body>
