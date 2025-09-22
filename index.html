@@ -215,8 +215,7 @@ updateClock();
         {
           "symbols": [
             { "proName": "FOREXCOM:SPXUSD", "title": "S&P 500" },
-                          { "proName": "NASDAQ:qqq", "title": "Robinhood" },
-
+            { "proName": "NASDAQ:QQQ", "title": "QQQ" },
             { "proName": "NASDAQ:HOOD", "title": "Robinhood" },
             { "proName": "NASDAQ:PLTR", "title": "Palantir" },
             { "proName": "NASDAQ:RKLB", "title": "Rocket Lab" },
@@ -288,28 +287,28 @@ updateClock();
                 <div class="channel-header">
                     <div class="channel-name">Schwab</div>
                     <div class="channel-controls">
-                        <a href="https://www.youtube.com/watch?v=ki7Xn8Gev6s" class="direct-link" target="_blank">Open</a>
+                        <a href="https://www.youtube.com/watch?v=2a-kQVlrYSo" class="direct-link" target="_blank">Open</a>
                         <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
                         <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
                     </div>
                 </div>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/ki7Xn8Gev6s?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/2a-kQVlrYSo?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
             </div>
 
             <!-- Channel 4 - FOX -->
             <div class="channel">
                 <div class="channel-header">
-                    <div class="channel-name">FOX</div>
+                    <div class="channel-name">CNBC</div>
                     <div class="channel-controls">
-                        <a href="https://www.youtube.com/watch?v=mym0bEHwWZM" class="direct-link" target="_blank">Open</a>
+                        <a href="https://www.youtube.com/watch?v=9NyxcX3rhQs" class="direct-link" target="_blank">Open</a>
                         <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
                         <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
                     </div>
                 </div>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/mym0bEHwWZM?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/9NyxcX3rhQs?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
             </div>
 
@@ -417,6 +416,28 @@ updateClock();
                         <!-- Top losers will be added by JavaScript -->
                     </div>
                 </div>
+
+                <!-- Additional Market Data Sections -->
+                <div class="market-overview">
+                    <div class="market-header">Crypto Market</div>
+                    <div class="market-grid" id="crypto-market">
+                        <!-- Crypto data will be added by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="market-overview">
+                    <div class="market-header">Forex Major Pairs</div>
+                    <div class="market-grid" id="forex-pairs">
+                        <!-- Forex data will be added by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="market-overview">
+                    <div class="market-header">Commodities</div>
+                    <div class="market-grid" id="commodities">
+                        <!-- Commodities data will be added by JavaScript -->
+                    </div>
+                </div>
                 
             </div>
             
@@ -425,10 +446,12 @@ updateClock();
                  <div class="custom-channel">
                     <div class="custom-channel-title">Add Custom Channel</div>
                     <div class="url-input-group">
-                        <input type="text" class="url-input" id="custom-channel-name" placeholder="Channel Name">
-                        <input type="text" class="url-input" id="custom-video-id" placeholder="YouTube Video ID (e.g., dQw4w9WgXcQ)">
-                        <button class="add-channel-button" id="add-custom-channel">Add Channel</button>
+                        <input type="text" class="url-input" id="custom-channel-name" placeholder="Channel Name (e.g., My Custom Feed)">
+                        <input type="text" class="url-input" id="custom-video-url" placeholder="YouTube URL or Video ID (e.g., https://youtube.com/watch?v=abc123 or abc123)">
+                        <button class="add-channel-button" id="add-custom-channel" onclick="addCustomChannelSimple();">Add Channel</button>
+                        <button onclick="testAddChannel()" style="margin-left: 10px; padding: 5px 10px; background: #ff6b6b; color: white; border: none; border-radius: 3px; cursor: pointer;">Test Add Channel</button>
                     </div>
+                    <div id="channel-error" class="error-message" style="display: none; color: #ff6b6b; margin-top: 10px; font-size: 14px;"></div>
                 </div>
                 <br>
                 <div id="feed-management-section">
@@ -439,7 +462,7 @@ updateClock();
         
                 <h1>Market News</h1>
                 <div id="news-filter-section">
-                    <input type="text" id="newsSearchInput" placeholder="Filter news by keyword...">
+                    <input type="texen t lovt" id="newsSearchInput" placeholder="Filter news by keyword...">
                 </div>
                 <ul id="feed">
                     <p id="loading">Loading news feeds...</p>
@@ -447,7 +470,7 @@ updateClock();
 
                 <div class="news-feed" id="twitter-feed">
                     <div class="news-header">Twitter Feed</div>
-                    <a class="twitter-timeline" data-height="400" data-theme="dark" href="https://twitter.com/MarketWatch?ref_src=twsrc%5Etfw">Tweets by MarketWatch</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    <a class="twitter-timeline" data-height="250" data-theme="dark" href="https://twitter.com/MarketWatch?ref_src=twsrc%5Etfw">Tweets by MarketWatch</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                 </div>
 
                 <div class="news-feed" id="economic-calendar">
@@ -457,7 +480,7 @@ updateClock();
                         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
                         {
                         "width": "100%",
-                        "height": "400",
+                        "height": "250",
                         "colorTheme": "dark",
                         "isTransparent": true,
                         "locale": "en",
@@ -467,14 +490,14 @@ updateClock();
                     </div>
                 </div>
 
-                <div class="news-feed" id="sector-performance" style="height: 450px;">
+                <div class="news-feed" id="sector-performance">
                     <div class="news-header">Sector Performance</div>
                     <div class="tradingview-widget-container">
                         <div class="tradingview-widget-container__widget"></div>
                         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-heatmap.js" async>
                         {
                         "width": "100%",
-                        "height": "400",
+                        "height": "250",
                         "colorTheme": "dark",
                         "isTransparent": true,
                         "locale": "en",
@@ -508,15 +531,152 @@ updateClock();
             { name: "EUR/USD", symbol: "EUR", price: 1.0842, change: 0.0023, changePercent: 0.21 }
         ];
         
+        // Function to extract video ID from YouTube URL
+        function extractVideoId(url) {
+            const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+
+        // Function to validate YouTube URL or video ID
+        function validateYouTubeInput(input) {
+            const trimmedInput = input.trim();
+            
+            // Check if it's already a valid video ID (11 characters)
+            if (/^[a-zA-Z0-9_-]{11}$/.test(trimmedInput)) {
+                return trimmedInput;
+            }
+            
+            // Check if it's a YouTube URL
+            const videoId = extractVideoId(trimmedInput);
+            if (videoId) {
+                return videoId;
+            }
+            
+            return null;
+        }
+
+        // Function to show error message
+        function showChannelError(message) {
+            const errorDiv = document.getElementById('channel-error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Simple function to add custom channel (called directly from onclick)
+        function addCustomChannelSimple() {
+            console.log('addCustomChannelSimple called!');
+            
+            const channelName = document.getElementById('custom-channel-name').value.trim() || 'Custom Channel';
+            const videoInput = document.getElementById('custom-video-url').value.trim();
+            
+            console.log('Channel name:', channelName);
+            console.log('Video input:', videoInput);
+            
+            if (!videoInput) {
+                alert('Please enter a YouTube URL or Video ID');
+                return;
+            }
+            
+            const videoId = validateYouTubeInput(videoInput);
+            console.log('Extracted video ID:', videoId);
+            
+            if (!videoId) {
+                alert('Invalid YouTube URL or Video ID. Please check and try again.');
+                return;
+            }
+            
+            const videosSection = document.getElementById('videos-section');
+            if (!videosSection) {
+                console.error('videos-section not found!');
+                alert('Error: videos-section not found!');
+                return;
+            }
+            
+            const channelElement = document.createElement('div');
+            channelElement.className = 'channel';
+            channelElement.innerHTML = `
+                <div class="channel-header">
+                    <div class="channel-name">${channelName}</div>
+                    <div class="channel-controls">
+                        <a href="https://www.youtube.com/watch?v=${videoId}" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            `;
+            
+            videosSection.appendChild(channelElement);
+            console.log('Channel added successfully!');
+            
+            // Clear inputs
+            document.getElementById('custom-channel-name').value = '';
+            document.getElementById('custom-video-url').value = '';
+            
+            alert(`Successfully added channel: ${channelName}`);
+        }
+
+        // Test function to manually add a channel
+        function testAddChannel() {
+            console.log('Test function called!');
+            const channelName = 'Test Channel';
+            const videoId = 'dQw4w9WgXcQ'; // Rick Roll video ID for testing
+            
+            const videosSection = document.getElementById('videos-section');
+            if (!videosSection) {
+                console.error('videos-section not found!');
+                return;
+            }
+            
+            const channelElement = document.createElement('div');
+            channelElement.className = 'channel';
+            channelElement.innerHTML = `
+                <div class="channel-header">
+                    <div class="channel-name">${channelName}</div>
+                    <div class="channel-controls">
+                        <a href="https://www.youtube.com/watch?v=${videoId}" class="direct-link" target="_blank">Open</a>
+                        <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                        <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            `;
+            
+            videosSection.appendChild(channelElement);
+            console.log('Test channel added successfully!');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const addCustomChannelButton = document.getElementById('add-custom-channel');
             const customChannelNameInput = document.getElementById('custom-channel-name');
-            const customVideoIdInput = document.getElementById('custom-video-id');
+            const customVideoUrlInput = document.getElementById('custom-video-url');
             const videosSection = document.getElementById('videos-section');
             const marketGrid = document.getElementById('market-grid');
             const marketTicker = document.getElementById('market-ticker');
             const timeDisplay = document.getElementById('time-display');
             const chartButtons = document.querySelectorAll('.chart-button');
+            
+            // Debug logging
+            console.log('DOM loaded, checking elements:');
+            console.log('addCustomChannelButton:', addCustomChannelButton);
+            console.log('customChannelNameInput:', customChannelNameInput);
+            console.log('customVideoUrlInput:', customVideoUrlInput);
+            console.log('videosSection:', videosSection);
+            
+            // Test if button exists and add a simple click handler
+            if (addCustomChannelButton) {
+                console.log('Button found, adding event listener...');
+            } else {
+                console.error('Button not found!');
+            }
             
             // Initialize market data
             initializeMarketData();
@@ -527,33 +687,67 @@ updateClock();
             
             // Add custom channel
             addCustomChannelButton.addEventListener('click', function() {
-                const channelName = customChannelNameInput.value.trim() || 'Custom Channel';
-                const videoId = customVideoIdInput.value.trim();
+                console.log('Add channel button clicked!'); // Debug log
                 
-                if (videoId) {
-                    // Create new channel element
-                    const channelElement = document.createElement('div');
-                    channelElement.className = 'channel';
-                    channelElement.innerHTML = `
-                        <div class="channel-header">
-                            <div class="channel-name">${channelName}</div>
-                            <div class="channel-controls">
-                                <a href="https://www.youtube.com/watch?v=${videoId}" class="direct-link" target="_blank">Open</a>
-                                <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
-                                <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
-                            </div>
+                const channelName = customChannelNameInput.value.trim() || 'Custom Channel';
+                const videoInput = customVideoUrlInput.value.trim();
+                
+                console.log('Channel name:', channelName); // Debug log
+                console.log('Video input:', videoInput); // Debug log
+                
+                if (!videoInput) {
+                    showChannelError('Please enter a YouTube URL or Video ID');
+                    return;
+                }
+                
+                const videoId = validateYouTubeInput(videoInput);
+                console.log('Extracted video ID:', videoId); // Debug log
+                
+                if (!videoId) {
+                    showChannelError('Invalid YouTube URL or Video ID. Please check and try again.');
+                    return;
+                }
+                
+                // Create new channel element
+                const channelElement = document.createElement('div');
+                channelElement.className = 'channel';
+                channelElement.innerHTML = `
+                    <div class="channel-header">
+                        <div class="channel-name">${channelName}</div>
+                        <div class="channel-controls">
+                            <a href="https://www.youtube.com/watch?v=${videoId}" class="direct-link" target="_blank">Open</a>
+                            <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
+                            <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
                         </div>
-                        <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                        </div>
-                    `;
-                    
-                    // Add to videos section
-                    videosSection.appendChild(channelElement);
-                    
-                    // Clear inputs
-                    customChannelNameInput.value = '';
-                    customVideoIdInput.value = '';
+                    </div>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                `;
+                
+                // Add to videos section
+                videosSection.appendChild(channelElement);
+                console.log('Channel added to videos section'); // Debug log
+                
+                // Clear inputs
+                customChannelNameInput.value = '';
+                customVideoUrlInput.value = '';
+                
+                // Show success message
+                console.log(`Successfully added channel: ${channelName}`);
+                alert(`Successfully added channel: ${channelName}`); // Temporary success message
+            });
+            
+            // Allow Enter key to add channel
+            customVideoUrlInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addCustomChannelButton.click();
+                }
+            });
+            
+            customChannelNameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    customVideoUrlInput.focus();
                 }
             });
             
@@ -866,6 +1060,88 @@ updateClock();
         }
 
         fetchMarketMovers();
+
+        // Additional market data for left column
+        const cryptoData = [
+            { name: "Bitcoin", symbol: "BTC", price: 68923.45, change: 1254.20, changePercent: 1.85 },
+            { name: "Ethereum", symbol: "ETH", price: 3872.12, change: 67.25, changePercent: 1.77 },
+            { name: "Binance Coin", symbol: "BNB", price: 623.45, change: -12.30, changePercent: -1.94 },
+            { name: "Solana", symbol: "SOL", price: 185.67, change: 8.45, changePercent: 4.77 }
+        ];
+
+        const forexData = [
+            { name: "EUR/USD", symbol: "EUR", price: 1.0842, change: 0.0023, changePercent: 0.21 },
+            { name: "GBP/USD", symbol: "GBP", price: 1.2634, change: -0.0045, changePercent: -0.35 },
+            { name: "USD/JPY", symbol: "JPY", price: 149.23, change: 0.87, changePercent: 0.59 },
+            { name: "USD/CAD", symbol: "CAD", price: 1.3542, change: -0.0012, changePercent: -0.09 }
+        ];
+
+        const commoditiesData = [
+            { name: "Gold", symbol: "GC", price: 2240.80, change: 15.30, changePercent: 0.69 },
+            { name: "Silver", symbol: "SI", price: 25.67, change: 0.45, changePercent: 1.78 },
+            { name: "Crude Oil", symbol: "CL", price: 75.82, change: -0.32, changePercent: -0.42 },
+            { name: "Natural Gas", symbol: "NG", price: 3.45, change: 0.12, changePercent: 3.61 }
+        ];
+
+        // Function to populate additional market data
+        function populateAdditionalMarketData() {
+            // Populate Crypto Market
+            const cryptoGrid = document.getElementById('crypto-market');
+            cryptoData.forEach(item => {
+                const changeClass = item.change >= 0 ? 'change-up' : 'change-down';
+                const changeSign = item.change >= 0 ? '+' : '';
+                
+                const marketItem = document.createElement('div');
+                marketItem.className = 'market-item';
+                marketItem.innerHTML = `
+                    <div class="market-name">${item.name}</div>
+                    <div class="market-price">$${item.price.toLocaleString()}</div>
+                    <div class="market-change ${changeClass}">
+                        ${changeSign}${item.change.toLocaleString()} (${changeSign}${item.changePercent.toFixed(2)}%)
+                    </div>
+                `;
+                cryptoGrid.appendChild(marketItem);
+            });
+
+            // Populate Forex Pairs
+            const forexGrid = document.getElementById('forex-pairs');
+            forexData.forEach(item => {
+                const changeClass = item.change >= 0 ? 'change-up' : 'change-down';
+                const changeSign = item.change >= 0 ? '+' : '';
+                
+                const marketItem = document.createElement('div');
+                marketItem.className = 'market-item';
+                marketItem.innerHTML = `
+                    <div class="market-name">${item.name}</div>
+                    <div class="market-price">${item.price.toFixed(4)}</div>
+                    <div class="market-change ${changeClass}">
+                        ${changeSign}${item.change.toFixed(4)} (${changeSign}${item.changePercent.toFixed(2)}%)
+                    </div>
+                `;
+                forexGrid.appendChild(marketItem);
+            });
+
+            // Populate Commodities
+            const commoditiesGrid = document.getElementById('commodities');
+            commoditiesData.forEach(item => {
+                const changeClass = item.change >= 0 ? 'change-up' : 'change-down';
+                const changeSign = item.change >= 0 ? '+' : '';
+                
+                const marketItem = document.createElement('div');
+                marketItem.className = 'market-item';
+                marketItem.innerHTML = `
+                    <div class="market-name">${item.name}</div>
+                    <div class="market-price">$${item.price.toLocaleString()}</div>
+                    <div class="market-change ${changeClass}">
+                        ${changeSign}${item.change.toLocaleString()} (${changeSign}${item.changePercent.toFixed(2)}%)
+                    </div>
+                `;
+                commoditiesGrid.appendChild(marketItem);
+            });
+        }
+
+        // Call the function when DOM is loaded
+        document.addEventListener('DOMContentLoaded', populateAdditionalMarketData);
 
     </script>
  <script>
