@@ -1,4 +1,6 @@
 
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
 :root {
     --bg-dark: #121212;
     --bg-card: #1e1e1e;
@@ -345,11 +347,13 @@ transform: scale(1.05);
 }
 
 .feed-item img {
-    max-width: 100%;
-    height: 150px; /* Set a fixed height */
-    object-fit: cover; /* Ensure the image covers the area without distortion */
-    margin-top: 10px;
+    width: 110px;
+    height: 72px;
+    object-fit: cover;
     border-radius: 4px;
+    float: right;
+    margin: 0 0 8px 12px;
+    flex-shrink: 0;
 }
 
 .news-feed {
@@ -542,10 +546,11 @@ footer {
 .feed-item {
     background-color: #080808;
     border: 1px solid #003300;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 0;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border-radius: 4px;
     transition: border-color 0.3s ease;
+    overflow: hidden;
 }
 .feed-item:hover {
     border-color: #00ff00;
@@ -553,18 +558,20 @@ footer {
 .feed-item a {
     text-decoration: none;
     color: #00ff00;
-    font-size: 1.2em;
+    font-size: 0.95em;
     font-weight: normal;
     transition: color 0.3s ease;
+    line-height: 1.3;
 }
 .feed-item a:hover {
     color: #ffffff;
     text-decoration: underline;
 }
 .feed-item p {
-    color: #cccccc;
-    margin: 10px 0 0;
-    font-size: 0.95em;
+    color: #aaaaaa;
+    margin: 3px 0 0;
+    font-size: 0.82em;
+    line-height: 1.4;
 }
 .feed-item small {
     color: #555555;
@@ -760,6 +767,80 @@ font-size: 2rem;
 }
 }
 
-/* Add Font Awesome for icons */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+/* ── Market Session Banner ── */
+.session-banner {
+    padding: 4px 15px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+}
+.session-open     { background: rgba(76,175,80,0.1);  color: #4caf50; border: 1px solid rgba(76,175,80,0.2); }
+.session-premarket{ background: rgba(30,136,229,0.1); color: #42a5f5; border: 1px solid rgba(30,136,229,0.2); }
+.session-afterhours{ background: rgba(255,152,0,0.1); color: #ffb74d; border: 1px solid rgba(255,152,0,0.2); }
+.session-closed   { background: rgba(120,144,156,0.08); color: #78909c; border: 1px solid rgba(120,144,156,0.2); }
+.session-banner .session-sub { opacity: 0.65; font-weight: 400; }
+
+/* ── Video section toggle ── */
+.videos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+.videos-label {
+    font-size: 0.72rem;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+.toggle-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid #2a2a2a;
+    color: #64748b;
+    padding: 3px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    transition: all 0.15s;
+}
+.toggle-btn:hover { border-color: #444; color: #94a3b8; }
+.videos-section.collapsed { display: none; }
+
+/* ── Smaller videos on mid-size screens ── */
+@media (max-width: 1400px) and (min-width: 1025px) {
+    .video-container { padding-bottom: 44%; }
+}
+
+/* ── Market news h1 override ── */
+#news-heading {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 16px 0 8px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ── Live data badge ── */
+.live-badge {
+    display: inline-block;
+    background: rgba(76,175,80,0.15);
+    color: #4caf50;
+    border: 1px solid rgba(76,175,80,0.3);
+    border-radius: 3px;
+    font-size: 0.65rem;
+    padding: 1px 5px;
+    margin-left: 6px;
+    vertical-align: middle;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+}
+
 

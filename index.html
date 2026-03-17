@@ -238,7 +238,20 @@ updateClock();
         </script>
     </div>
     <!-- End TradingView Ticker Tape Widget -->
-        
+
+        <!-- Market Session Banner -->
+        <div id="session-banner" class="session-banner session-closed">
+            <span id="session-label">○ MARKET CLOSED</span>
+            <span class="session-sub" id="session-time"></span>
+            <span class="session-sub">NYSE / NASDAQ · ET</span>
+        </div>
+
+        <!-- Video section toggle -->
+        <div class="videos-header">
+            <span class="videos-label">Live Streams</span>
+            <button class="toggle-btn" id="toggle-videos-btn" onclick="toggleVideos()">▼ Hide</button>
+        </div>
+
         <!-- Video section at the top -->
         <div class="videos-section" id="videos-section">
             <!-- Channel 1 - Bloomberg -->
@@ -284,33 +297,37 @@ updateClock();
             </div>
 
     
-            <!-- Channel 3 - Schwab -->
+            <!-- Channel 3 - Schwab Network -->
             <div class="channel">
                 <div class="channel-header">
-                    <div class="channel-name">Schwab</div>
+                    <div class="channel-name">Schwab Network</div>
                     <div class="channel-controls">
-                        <a href="https://www.youtube.com/watch?v=2a-kQVlrYSo" class="direct-link" target="_blank">Open</a>
+                        <a href="https://www.youtube.com/@SchwabNetwork" class="direct-link" target="_blank">Open</a>
                         <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
                         <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
                     </div>
                 </div>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/2a-kQVlrYSo?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <div class="video-container" style="background:#111; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:20px; box-sizing:border-box; position:relative; padding-bottom:56.25%; height:0;">
+                    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center;">
+                        <div style="font-size:2rem; margin-bottom:8px;">📺</div>
+                        <div style="color:#b3b3b3; font-size:0.85rem; margin-bottom:12px;">Schwab Network Live</div>
+                        <a href="https://www.youtube.com/@SchwabNetwork" target="_blank" style="background:#1e88e5; color:#fff; padding:8px 16px; border-radius:4px; text-decoration:none; font-size:0.85rem; font-weight:500;">Watch on YouTube ↗</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Channel 4 - FOX -->
+            <!-- Channel 4 - tastytrade -->
             <div class="channel">
                 <div class="channel-header">
-                    <div class="channel-name">CNBC</div>
+                    <div class="channel-name">tastytrade</div>
                     <div class="channel-controls">
-                        <a href="https://www.youtube.com/watch?v=9NyxcX3rhQs" class="direct-link" target="_blank">Open</a>
+                        <a href="https://www.youtube.com/@tastytrade" class="direct-link" target="_blank">Open</a>
                         <button class="channel-button" onclick="refreshChannel(this)" title="Refresh">↻</button>
                         <button class="channel-button" onclick="removeChannel(this)" title="Remove">✕</button>
                     </div>
                 </div>
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/9NyxcX3rhQs?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/videoseries?list=PLPVomTHMzdS_pBfR_ANjTrFGIbMHeSdTW&autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
             </div>
 
@@ -462,7 +479,7 @@ updateClock();
                     <ul id="feed-list"></ul>
                 </div>
         
-                <h1>Market News</h1>
+                <div id="news-heading">Market News</div>
                 <div id="news-filter-section">
                     <input type="texen t lovt" id="newsSearchInput" placeholder="Filter news by keyword...">
                 </div>
@@ -514,11 +531,7 @@ updateClock();
         </div>
     </div>
     
-    <footer>
-        <!-- Financial News & Market Dashboard &copy; 2025 | Dark Theme -->
-
-        - - - - - - 
-    </footer>
+    <!-- empty footer removed -->
 
     <script>
         // Sample market data (since we can't make actual API calls)
@@ -913,7 +926,7 @@ updateClock();
                 const description = document.createElement('p');
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = item.description;
-                description.textContent = (tempDiv.textContent || tempDiv.innerText || "").substring(0, 140) + '...';
+                description.textContent = (tempDiv.textContent || tempDiv.innerText || "").substring(0, 90) + '…';
 
                 const pubDate = document.createElement('small');
                 pubDate.textContent = new Date(item.pubDate).toLocaleString();
@@ -1041,8 +1054,8 @@ updateClock();
             const container = document.getElementById(containerId);
             container.innerHTML = '';
 
-            if (!data || data.length === 0) {
-                container.innerHTML = `<p style="text-align: center; color: #555;">Data not available.</p>`;
+            if (!Array.isArray(data) || data.length === 0) {
+                container.innerHTML = `<p style="text-align:center;color:#555;font-size:0.8rem;padding:8px;">Data unavailable</p>`;
                 return;
             }
 
@@ -1062,6 +1075,115 @@ updateClock();
         }
 
         fetchMarketMovers();
+
+        // ── Real stock quotes via FMP ──────────────────────────────────────
+        async function fetchStockQuotes() {
+            try {
+                const symbols = 'SPY,QQQ,AAPL,MSFT,TSLA,GOOGL,AMZN,NVDA';
+                const res = await fetch(`https://financialmodelingprep.com/api/v3/quote/${symbols}?apikey=${fmpApiKey}`);
+                const data = await res.json();
+                if (!Array.isArray(data)) return;
+                const marketGrid = document.getElementById('market-grid');
+                marketGrid.innerHTML = '';
+                data.forEach(item => {
+                    const changeClass = item.changesPercentage >= 0 ? 'change-up' : 'change-down';
+                    const sign = item.changesPercentage >= 0 ? '+' : '';
+                    const el = document.createElement('div');
+                    el.className = 'market-item';
+                    el.innerHTML = `
+                        <div class="market-name">${item.symbol}</div>
+                        <div class="market-price">$${item.price.toFixed(2)}</div>
+                        <div class="market-change ${changeClass}">${sign}${item.changesPercentage.toFixed(2)}%</div>
+                    `;
+                    marketGrid.appendChild(el);
+                });
+                document.querySelector('.market-header').innerHTML = 'Market Overview <span class="live-badge">LIVE</span>';
+            } catch(e) { console.error('FMP quotes failed:', e); }
+        }
+        fetchStockQuotes();
+
+        // ── Real crypto prices via CoinGecko (no API key) ─────────────────
+        async function fetchCryptoData() {
+            try {
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin&vs_currencies=usd&include_24hr_change=true');
+                const data = await res.json();
+                const map = {
+                    bitcoin:     { name: 'Bitcoin',  symbol: 'BTC' },
+                    ethereum:    { name: 'Ethereum', symbol: 'ETH' },
+                    solana:      { name: 'Solana',   symbol: 'SOL' },
+                    binancecoin: { name: 'BNB',      symbol: 'BNB' }
+                };
+                const cryptoGrid = document.getElementById('crypto-market');
+                cryptoGrid.innerHTML = '';
+                Object.entries(data).forEach(([id, vals]) => {
+                    const m = map[id];
+                    const change = vals.usd_24h_change;
+                    const changeClass = change >= 0 ? 'change-up' : 'change-down';
+                    const sign = change >= 0 ? '+' : '';
+                    const el = document.createElement('div');
+                    el.className = 'market-item';
+                    el.innerHTML = `
+                        <div class="market-name">${m.name}</div>
+                        <div class="market-price">$${vals.usd.toLocaleString()}</div>
+                        <div class="market-change ${changeClass}">${sign}${change.toFixed(2)}%</div>
+                    `;
+                    cryptoGrid.appendChild(el);
+                });
+                document.querySelectorAll('.market-header')[3].innerHTML = 'Crypto Market <span class="live-badge">LIVE</span>';
+            } catch(e) { console.error('CoinGecko fetch failed:', e); }
+        }
+        fetchCryptoData();
+
+        // ── Market Session Banner ──────────────────────────────────────────
+        function updateSessionBanner() {
+            try {
+                const now = new Date();
+                const etParts = new Intl.DateTimeFormat('en-US', {
+                    timeZone: 'America/New_York',
+                    weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: false
+                }).formatToParts(now);
+                const day  = etParts.find(p => p.type === 'weekday').value;
+                const hour = parseInt(etParts.find(p => p.type === 'hour').value);
+                const min  = parseInt(etParts.find(p => p.type === 'minute').value);
+                const total = hour * 60 + min;
+                const isWeekend = day === 'Sat' || day === 'Sun';
+                const banner = document.getElementById('session-banner');
+                const label  = document.getElementById('session-label');
+                const sub    = document.getElementById('session-time');
+                let session, text, note;
+                if (isWeekend) {
+                    session='closed'; text='○ MARKET CLOSED'; note='Opens Monday 9:30 AM ET';
+                } else if (total >= 570 && total < 960) {
+                    session='open'; text='● NYSE / NASDAQ OPEN';
+                    const left = 960 - total;
+                    note = `Closes in ${Math.floor(left/60)}h ${left%60}m`;
+                } else if (total >= 240 && total < 570) {
+                    session='premarket'; text='◐ PRE-MARKET';
+                    const left = 570 - total;
+                    note = `Regular opens in ${Math.floor(left/60)}h ${left%60}m`;
+                } else if (total >= 960 && total < 1200) {
+                    session='afterhours'; text='◑ AFTER HOURS';
+                    const left = 1200 - total;
+                    note = `Closes in ${Math.floor(left/60)}h ${left%60}m`;
+                } else {
+                    session='closed'; text='○ MARKET CLOSED';
+                    note = total < 240 ? 'Pre-market at 4:00 AM ET' : 'Pre-market tomorrow 4:00 AM ET';
+                }
+                banner.className = `session-banner session-${session}`;
+                label.textContent = text;
+                sub.textContent = note;
+            } catch(e) {}
+        }
+        updateSessionBanner();
+        setInterval(updateSessionBanner, 60000);
+
+        // ── Video section toggle ──────────────────────────────────────────
+        function toggleVideos() {
+            const section = document.getElementById('videos-section');
+            const btn = document.getElementById('toggle-videos-btn');
+            const collapsed = section.classList.toggle('collapsed');
+            btn.textContent = collapsed ? '▶ Show' : '▼ Hide';
+        }
 
         // Additional market data for left column
         const cryptoData = [
@@ -1210,170 +1332,45 @@ document.addEventListener("DOMContentLoaded", () => {
                         <li>DOW JONES <span class="up">▲ 0.78%</span></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Market Analysis</a></li>
-                        <li><a href="#">Economic Calendar</a></li>
-                        <li><a href="#">Sector Performance</a></li>
-                        <li><a href="#">Contact Research</a></li>
+                        <li><a href="index.html">Dashboard</a></li>
+                        <li><a href="ticker.html">Ticker / Stock Details</a></li>
+                        <li><a href="trading-terminal.html">Trading Terminal</a></li>
+                        <li><a href="analysis.html">My Notes</a></li>
                     </ul>
                 </div>
-                
+
+                <div class="footer-section">
+                    <h4>Nexus Trader</h4>
+                    <p style="font-size:0.85rem; color:#64748b; margin:0 0 12px;">Connect your Nexus Trader account to sync positions, orders, and portfolio P&L directly into this dashboard.</p>
+                    <button id="nexus-connect-btn" style="background:#1e88e5; color:#fff; border:none; padding:9px 18px; border-radius:5px; cursor:pointer; font-size:0.85rem; font-weight:600; letter-spacing:0.5px; transition:background 0.2s;" onmouseover="this.style.background='#1565c0'" onmouseout="this.style.background='#1e88e5'">
+                        ⚡ Connect Nexus Trader
+                    </button>
+                    <div id="nexus-status" style="margin-top:8px; font-size:0.75rem; color:#64748b;">Status: <span style="color:#f87171;">● Not connected</span></div>
+                </div>
+
                 <div class="footer-section">
                     <h4>Connect</h4>
                     <div class="social-links">
                         <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                        <a href="https://github.com/jhanKarimov/newsfeed" class="social-icon" target="_blank"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="footer-copyright">
-            © 2025 NEWSFEED | Developed by JHAN | Financial Data Powered by MarketStack API
+            © 2026 NEWSFEED | Developed by JHAN | Nexus Trader integration coming soon
         </div>
     </div>
 </footer>
 
-<style>
-.modern-footer {
-    background: linear-gradient(145deg, #0f172a, #1e293b);
-    color: #94a3b8;
-    padding: 4rem 0 2rem;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    border-top: 1px solid #334155;
-}
-
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-.footer-main {
-    display: grid;
-    gap: 3rem;
-    padding-bottom: 3rem;
-    border-bottom: 1px solid #334155;
-}
-
-.footer-brand {
-    text-align: center;
-}
-
-.footer-logo {
-    display: block;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #38bdf8;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    background: linear-gradient(45deg, #38bdf8, #818cf8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.footer-slogan {
-    font-size: 1.1rem;
-    color: #64748b;
-    margin-top: 0.5rem;
-}
-
-.footer-columns {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.footer-section h4 {
-    color: #f8fafc;
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-bottom: 0.5rem;
-}
-
-.footer-section h4:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 2px;
-    background: #38bdf8;
-}
-
-.market-data li {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #334155;
-}
-
-.market-data .up { color: #4ade80; }
-.market-data .down { color: #f87171; }
-
-.footer-links li {
-    margin: 0.8rem 0;
-}
-
-.footer-links a {
-    color: #94a3b8;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-    color: #38bdf8;
-}
-
-.social-links {
-    display: flex;
-    gap: 1.5rem;
-    margin-top: 1rem;
-}
-
-.social-icon {
-    font-size: 1.5rem;
-    color: #64748b;
-    transition: all 0.3s ease;
-}
-
-.social-icon:hover {
-    color: #38bdf8;
-    transform: translateY(-2px);
-}
-
-.footer-copyright {
-    text-align: center;
-    padding-top: 2rem;
-    margin-top: 2rem;
-    font-size: 0.9rem;
-    color: #64748b;
-}
-
-@media (max-width: 768px) {
-    .footer-columns {
-        grid-template-columns: 1fr;
-    }
-    
-    .footer-brand {
-        text-align: left;
-    }
-    
-    .footer-logo {
-        font-size: 2rem;
-    }
-}
-
-/* Add Font Awesome for icons */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
-</style>
+<!-- footer styles moved to style.css -->
 
 </body>
 </html>
